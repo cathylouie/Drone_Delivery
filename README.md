@@ -38,6 +38,15 @@ Chances are if you're making a web app, you'll have a database. If you're using 
 
 Now at this point you're probably wondering, wait what? I've been using sqlite. How does Postgres help me? Will I have to start all over? Well... the flask_template app uses SQLAlchemy, which actualy doesn't care what you use as a DB.
 
+To get a db, tell Heroku to provision you one. `heroku addons:add heroku-postgresql`. Heroku will now create a db for you and give you back a URL, mine was `HEROKU_POSTGRESQL_PINK_URL`. From here we have to promote this db to the main  using the following command `heroku pg:promote HEROKU_POSTGRESQL_COLOR_URL` (don't forget to change the color).
+
+Now we have an app, a heroku account, and a heroku db! Almost there. One more step!
+
+Now we want to create the table and seed the database. Run `heroku run python model.py`
+
+
+Yea! Let's now open the app and see it on the internet!
+
 ### Misc
 
 #### Best practices
