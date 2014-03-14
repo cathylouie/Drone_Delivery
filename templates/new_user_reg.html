@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block body %}
+<h2>New customer registration</h2>
+<div id="new_user_reg">
+	<form method="post">
+    	<input type="text" name="email" placeholder="Email"><br>
+    	<input type="password" name="password" placeholder="Password"><br>
+        <input type="password" name="password_ver" placeholder="Verify Password"><br>
+    	<input type="text" name="firstname" placeholder="First name"><br>
+        <input type="text" name="surname" placeholder="Surname"><br>
+    	<input type="text" name="address1" placeholder="Address1"><br>
+    	<input type="text" name="address2" placeholder="Address2"><br>
+    	<input type="text" name="city" placeholder="City"><br>
+    	<input type="text" name="state" placeholder="State"><br>
+    	<input type="text" name="zipcode" placeholder="Zipcode"><br>
+    	<input type="text" name="country" placeholder="Country"><br>
+    	<input type="tel" name="phone" placeholder="Phone"><br>
+        <select class="form-control">
+            <option>Home</option>
+            <option>Delivery</option>
+        </select>
+    	<input type="submit">
+	</form>
+</div>
+
+{% endblock %}
+

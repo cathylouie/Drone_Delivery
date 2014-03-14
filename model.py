@@ -24,8 +24,8 @@ class User(Base, UserMixin):
     email = Column(String(64), nullable=False)
     password = Column(String(64), nullable=False)
     salt = Column(String(64), nullable=False)
-
-    posts = relationship("Post", uselist=True)
+    firstname = Column(String(64), nullable=False)
+    surname = Column(String(64), nullable=False)
 
     def set_password(self, password):
         self.salt = bcrypt.gensalt()
@@ -36,27 +36,36 @@ class User(Base, UserMixin):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
 
-class Post(Base):
-    __tablename__ = "posts"
+class Address(Base):
+    __tablename__ = "addresses"
     
     id = Column(Integer, primary_key=True)
-    title = Column(String(64), nullable=False)
-    body = Column(Text, nullable=False)
-    created_at = Column(DateTime, nullable=False, default=datetime.now)
-    posted_at = Column(DateTime, nullable=True, default=None)
     user_id = Column(Integer, ForeignKey("users.id"))
+    email = Column(String(64), ForeignKey("orders.email"))
+    address1 = Column(Text, nullable=False)
+    address2 = Column(Text, nullable=False)
+    city = Column(String(64), nullable=False)
+    state = Column(String(2), nullable=False)
+    zipcode = Column(Integer, nullable=False)
+    country = Column(Text, nullable=False)
+    phone = Column(Integer, nullable=True)
+    kind = Column(String(10), nullable=False)
 
-    user = relationship("User")
+    user = relationship("User", backref="addresses")
+    order = relationship("Order", backref="addresses")
 
+class Order(Base):
+    __tablename__ = "orders"
+
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer, nullable=False)
+    email = Column(String(64), nullable=False)
+    ducktype = Column(Text, nullable=False)
+    qty = Column(Integer, nullable=False)
+    
 
 def create_tables():
     Base.metadata.create_all(engine)
-    u = User(email="test@test.com")
-    u.set_password("unicorn")
-    session.add(u)
-    p = Post(title="This is a test post", body="This is the body of a test post.")
-    u.posts.append(p)
-    session.commit()
 
 if __name__ == "__main__":
     create_tables()

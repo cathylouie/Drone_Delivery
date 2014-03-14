@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>My Blog App</title>
+        <title>Duckies Store</title>
         <link rel="stylesheet" href="/static/css/bootstrap.min.css">
         <script type="text/javascript" src="/static/js/bootstrap.js"></script>
         <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
@@ -10,15 +10,16 @@
             <div class="navbar-inner">
                 <div class="container">
                     <ul class="nav">
-                        <li><a href="{{url_for("index")}}">A Blog</a></li>
-                        <li><a href="{{url_for("new_post")}}">New post</a></li>
+                        <li><a href="{{url_for("duck_list")}}">Our Duckies</a></li>
+                        <li><a href="{{url_for("duck_list")}}">Logout</a></li>
                         <li><a href="{{url_for("login")}}">Login</a></li>
                     </ul>
                 </div>
             </div>
         </div>
         <div class="container">
-            <h1>A Blog</h1>
+            <h1>Duckies Store</h1>
+            <p>Existing customers please login, new customers please register to order your duckies</p>
             <ul>
             {% for message in get_flashed_messages() %}
             <li>{{message}}</li>
