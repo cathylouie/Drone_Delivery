@@ -3,22 +3,24 @@
 <h2>New customer registration</h2>
 <div id="new_user_reg">
 	<form method="post">
-    	<input type="text" name="email" placeholder="Email"><br>
-    	<input type="password" name="password" placeholder="Password"><br>
-        <input type="password" name="password_ver" placeholder="Verify Password"><br>
-    	<input type="text" name="firstname" placeholder="First name"><br>
-        <input type="text" name="surname" placeholder="Surname"><br>
-    	<input type="text" name="address1" placeholder="Address1"><br>
+        <input type="hidden" name="duck" value="{{duck}}">
+    	<input type="text" name="email" placeholder="Email" required><br>
+    	<input type="password" name="password" placeholder="Password" required><br>
+        <input type="password" name="password_ver" placeholder="Verify Password" required><br>
+    	<input type="text" name="firstname" placeholder="First name" required><br>
+        <input type="text" name="surname" placeholder="Surname" required><br>
+        <p>Please fill in delivery address</p><br>
+    	<input type="text" name="address1" placeholder="Address1" required><br>
     	<input type="text" name="address2" placeholder="Address2"><br>
-    	<input type="text" name="city" placeholder="City"><br>
-    	<input type="text" name="state" placeholder="State"><br>
-    	<input type="text" name="zipcode" placeholder="Zipcode"><br>
-    	<input type="text" name="country" placeholder="Country"><br>
+    	<input type="text" name="city" placeholder="City" required><br>
+    	<input type="text" name="state" placeholder="State" required><br>
+    	<input type="text" name="zipcode" placeholder="Zipcode" required><br>
+    	<input type="text" name="country" placeholder="Country" required><br>
     	<input type="tel" name="phone" placeholder="Phone"><br>
-        <select class="form-control">
+<!--         <select class="form-control" name="kind" required>
             <option>Home</option>
             <option>Delivery</option>
-        </select>
+        </select><br> -->
     	<input type="submit">
 	</form>
 </div>

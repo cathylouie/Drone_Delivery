@@ -1,0 +1,44 @@
+<html>
+    <head>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">    
+        <title>
+            Order Page
+        </title>
+        <style>
+             h1 {
+                font-family: arial;
+                color: #000088;
+                
+             }
+             .duckbox {
+                border: solid blue 5px;
+                width: 280px;
+                margin-right: 10px;
+                margin-left: 10px;
+                padding: 10px 10px 10px 10px;
+                float:left;
+             }
+        </style>
+    </head>
+    <body>
+        <h1>
+            Order Page
+        </h1>
+        <div class ="duckbox">
+            	<img src="static/img/{{pic}}.jpg" height="225" style="max-width: 225px" id="pic">
+                <p>{{name}}</p><br>
+                <p>{{price}}</p><br>
+            	<p>{{bio}}</p><br>
+        </div>
+
+        <div id = "order">
+        	<form method="post">
+                <input type="hidden" name="duck" value="{{duck}}">
+        		<input type="number" name="qty">Qty<br>
+                <a class="btn btn-default" href = "/confirm_order?duck={{duck}}">Order now</a>
+                <p>                                                             </p>
+        		<a class="btn btn-default" href = "/duck_list">Return to Our Duckies</a>
+        	</form>
+        </div>       
+    </body>
+</html>

@@ -3,15 +3,16 @@
 <h2>Log in</h2>
 <div id="login">
 	<form method="post">
+    	<input type="hidden" name="duck" value="{{duck}}">
     	<input type="text" name="email" placeholder="Email"><br>
     	<input type="password" name="password" placeholder="Password"><br>
     	<input type="submit">
 	</form>
 </div>
 
-
-<div class="form" id="form2">
-    <a class="btn btn-info btn-lg" href = "/new_user_reg">Register new account</a>
+<div class="form" id="form1">
+	<input type="hidden" name="duck" value="{{duck}}">
+    <a class="btn btn-info btn-lg" href = "/new_user_reg?duck={{duck}}">Register new account</a>
 </div>
 
 {% endblock %}
