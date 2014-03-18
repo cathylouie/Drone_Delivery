@@ -32,13 +32,16 @@
         </div>
 
         <div id = "order">
-        	<form method="post">
-                <input type="hidden" name="duck" value="{{duck}}">
-        		<input type="number" name="qty">Qty<br>
-                <a class="btn btn-default" href = "/confirm_order?duck={{duck}}">Order now</a>
-                <p>                                                             </p>
-        		<a class="btn btn-default" href = "/duck_list">Return to Our Duckies</a>
+        	<form action="/confirm_order?duck={{duck_id}}" method="post">
+        		<input type="hidden" name="duck" value="{{duck_id}}">
+                <input type="number" name="qty">Qty<br>
+                <input type="submit" value="Order now">
         	</form>
-        </div>       
+        </div>
+
+        <div class="form" id="order2">
+        <a class="btn btn-info btn-lg" href = "/duck_list">Return to Our Duckies</a>
+        </div>
+
     </body>
 </html>

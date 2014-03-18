@@ -40,6 +40,8 @@ def view_order():
     name = d.name
     price = d.price
     bio = d.bio
+
+
     
     return render_template("view_order.html", duck_id=request.args.get("duck"),
                                                 pic = pic,
@@ -51,7 +53,6 @@ def view_order():
 def confirm_order():
     duck_id = request.args.get("duck")
     new_order = Order(user_id=current_user.id)
-    print new_order, "new order"
     model.session.add(new_order)
     model.session.commit()
     #This will request the new_order.id that was just commited for the DuckOrder tables 
@@ -64,8 +65,23 @@ def confirm_order():
     model.session.add(new_duckorder)
     model.session.commit()
 
-    #return render_template("confirm_order.html", order_id=new_order.id)
-    return redirect(url_for("confirm_order", duck_id=request.args.get("duck"), order_id=new_order.id))
+    a = model.session.query(Address).filter_by(user_id=current_user.id).one()
+    address1 = a.address1
+    address2 = a.address2
+    city = a.city
+    state = a.state
+    zipcode = a.zipcode
+    country = a.country
+
+    return render_template("confirm_order.html", duck_id=request.args.get("duck"), 
+                                                    order_id=new_order.id,
+                                                    address1 = a.address1,
+                                                    address2 = a.address2,
+                                                    city = a.city,
+                                                    state = a.state,
+                                                    zipcode = a.zipcode,
+                                                    country = a.country)
+    #return redirect(url_for("confirm_order", duck_id=request.args.get("duck"), order_id=new_order.id))
 
 @app.route("/login")
 def login():
