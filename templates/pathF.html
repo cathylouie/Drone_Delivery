@@ -1,0 +1,91 @@
+<html>
+    <head>
+        <title>Path Finder</title>
+        <style type="text/css">
+            canvas { border: 1px solid black;
+                     margin-left: 10px;
+                     margin-top: 10px
+                    }
+        </style>
+        <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+        <!-- <script type="text/javascript" src="/static/js/bootstrap.js"></script> -->
+        <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="/static/js/pathfinding-browser.min.js"></script>
+    </head>   
+    <body>
+        <canvas id="myCanvas" width="500" height="500"></canvas>
+   
+        <script type="text/javascript">
+            
+            //The first line retrieves the DOM node for the <canvas> element by calling the document.getElementById() method. Once you have the element node, you can access the drawing context using its getContext() method. Set type of Context to '2d' for 2d graphics
+            var canvas = document.getElementById('myCanvas');
+            var ctx = canvas.getContext('2d');
+            //drawing 10 vertical lines   
+                for (var i = 0; i < 10; i++){
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(50+i*50,0);
+                    ctx.lineTo(50+i*50,500);
+                    ctx.strokeStyle = "rgba(255,0,0,0.5)";
+                    ctx.stroke();
+                }
+            //drawing 10 horizontal lines     
+                for (var i = 0; i < 10; i++){
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    ctx.moveTo(0,50+i*50);
+                    ctx.lineTo(500,50+i*50);
+                    ctx.stroke();
+                }
+                
+                //drawing 1 red(starting node), 1 green(destination node) and 4 blue(obstales nodes) rectangles
+                //#09F=blue, #6C0=green, #F30=red
+                //fillRect(x,y,width,height)
+                ctx.fillStyle = '#09F';
+                ctx.fillRect(150,150,200,50);
+                ctx.fillStyle = '#6C0';
+                ctx.fillRect(200,350,50,50);
+                ctx.fillStyle = '#F30';
+                ctx.fillRect(300,50,50,50);
+                ctx.font = "20px Times New Roman";
+                ctx.fillStyle = "Black";
+                ctx.fillText("Start node", 5*50, 8*50);
+                ctx.fillText("destination node", 5*50, 50);
+
+            //build a grid map of 10 width by 10 height
+            var grid = new PF.Grid(10, 10);
+            //set node at (3,3)(4,3)(5,3)(6,3) to be un-walkable
+            grid.setWalkableAt(3, 3, false);
+            grid.setWalkableAt(4, 3, false);
+            grid.setWalkableAt(5, 3, false);
+            grid.setWalkableAt(6, 3, false);
+            //build a path-finder with AStarFinder and using chebyshev heuristic 
+            var finder = new PF.AStarFinder({
+                heuristic: PF.Heuristic.chebyshev,
+            allowDiagonal: true,
+            dontCrossCorners: true
+            });
+
+            // var finder = new PF.AStarFinder({
+            // allowDiagonal: true,
+            // dontCrossCorners: true
+            // });
+
+            //To find a path from (4, 7) to (6, 1), (Note: both the start point and end point should be walkable):
+            var path = finder.findPath(4, 7, 6, 1, grid);
+
+            //draw path
+            for (var i = 0; i < path.length; i++){
+                    
+                    ctx.lineWidth = 5;
+                    ctx.beginPath();
+                    ctx.moveTo(path[i][0]*50+25, path[i][1]*50+25);
+                    ctx.lineTo(path[i+1][0]*50+25, path[i+1][1]*50+25);
+                    ctx.strokeStyle = "black";
+                    ctx.stroke();
+                }
+
+        </script>
+   
+    </body>
+</html>

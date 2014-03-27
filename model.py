@@ -10,15 +10,15 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
 from flask.ext.login import UserMixin
 
-engine = create_engine(config.DB_URI, echo=False) 
-session = scoped_session(sessionmaker(bind=engine,
-                         autocommit = False,
-                         autoflush = False))
+postgres_engine = create_engine(config.DB_URL, echo=True) 
+postgres_session = scoped_session(sessionmaker(bind=postgres_engine,
+                                               autocommit = False,
+                                               autoflush = False))
 
-Base = declarative_base()
-Base.query = session.query_property()
+postgres_Base = declarative_base()
+postgres_Base.query = postgres_session.query_property()
 
-class User(Base, UserMixin):
+class User(postgres_Base, UserMixin):
     __tablename__ = "users" 
     id = Column(Integer, primary_key=True)
     email = Column(String(64), nullable=False)
@@ -36,7 +36,7 @@ class User(Base, UserMixin):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
 
-class Address(Base):
+class Address(postgres_Base):
     __tablename__ = "addresses"
     
     id = Column(Integer, primary_key=True)
@@ -52,7 +52,7 @@ class Address(Base):
 
     user = relationship("User", backref="addresses")
 
-class Order(Base):
+class Order(postgres_Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True)
@@ -60,7 +60,7 @@ class Order(Base):
 
     user = relationship("User", backref="orders")
     
-class Duck(Base):
+class Duck(postgres_Base):
     __tablename__ = "ducks"
 
     id = Column(Integer, primary_key=True)
@@ -69,19 +69,19 @@ class Duck(Base):
     price = Column(String(10), nullable=False)
     bio = Column(Text, nullable=False)
 
-class DuckOrder(Base):
+class DuckOrder(postgres_Base):
     __tablename__ = "duckorders"
 
     id = Column(Integer, primary_key=True)
     order_id = Column(Integer, ForeignKey("orders.id"))
-    duck_id = Column(Text, ForeignKey("ducks.id"))
+    duck_id = Column(Integer, ForeignKey("ducks.id"))
     qty = Column(Integer, nullable=False)
 
     order = relationship("Order", backref="duckorders")
     duck = relationship("Duck", backref="duckorders")
     
 def create_tables():
-    Base.metadata.create_all(engine)
+    postgres_Base.metadata.create_all(postgres_engine)
 
 if __name__ == "__main__":
     create_tables()

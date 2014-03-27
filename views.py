@@ -23,6 +23,14 @@ def load_user(user_id):
 # Adding markdown capability to the app
 Markdown(app)
 
+@app.route("/SFmap")
+def SFmap():
+    return render_template("SFmap.html")
+
+@app.route("/path_finding")
+def pathFinding():
+    return render_template("pathF.html")
+
 @app.route("/")
 def storeFront():
     return render_template("front_page.html")
@@ -35,7 +43,7 @@ def duck_list():
 @login_required
 def view_order():
     duck_id = request.args.get("duck")
-    d = model.session.query(Duck).get(duck_id)
+    d = model.postgres_session.query(Duck).get(duck_id)
     pic = d.pic
     name = d.name
     price = d.price
@@ -53,19 +61,19 @@ def view_order():
 def confirm_order():
     duck_id = request.args.get("duck")
     new_order = Order(user_id=current_user.id)
-    model.session.add(new_order)
-    model.session.commit()
+    model.postgres_session.add(new_order)
+    model.postgres_session.commit()
     #This will request the new_order.id that was just commited for the DuckOrder tables 
-    model.session.refresh(new_order)
+    model.postgres_session.refresh(new_order)
 
     qty = request.form.get("qty")
 
     new_duckorder = DuckOrder(order_id=new_order.id, duck_id=request.args.get("duck"), qty=qty)
 
-    model.session.add(new_duckorder)
-    model.session.commit()
+    model.postgres_session.add(new_duckorder)
+    model.postgres_session.commit()
 
-    a = model.session.query(Address).filter_by(user_id=current_user.id).one()
+    a = model.postgres_session.query(Address).filter_by(user_id=current_user.id).one()
     address1 = a.address1
     address2 = a.address2
     city = a.city
@@ -128,9 +136,9 @@ def new_user_reg():
     address2 = request.form.get("address2")
     city = request.form.get("city")
     state = request.form.get("state")
-    zipcode = request.form.get("zipcode")
+    zipcode = int(request.form.get("zipcode")) if request.form.get("zipcode") else None
     country = request.form.get("country")
-    phone = request.form.get("phone")
+    phone = int(request.form.get("phone")) if request.form.get("phone") else None
     
 #Verification if user already exists
     existing = User.query.filter_by(email=email).first()
@@ -145,16 +153,16 @@ def new_user_reg():
         new_user = User(email=email, firstname = firstname, surname = surname)#make the new_user object
         new_user.set_password(password)
         # Queue it up to be put into the database
-        model.session.add(new_user)
+        model.postgres_session.add(new_user)
         # Process all the things and commit to the database
-        model.session.commit()
+        model.postgres_session.commit()
         # Note that new_user is still a variable and it still has all the other info you gave it.
         # The database has more column that need to be filled in.
         # We need to ask the database for the information of the new user we have just commited. 
         # The .refresh() is like making a request to the database for the info of the new_user,
         # so that we can get the new_user.id that it has just generated to put in our user_id column in 
         # the addresses table.
-        model.session.refresh(new_user)
+        model.postgres_session.refresh(new_user)
 
         new_user_address = Address(user_id = new_user.id,
                                     email = email, 
@@ -167,8 +175,8 @@ def new_user_reg():
                                     phone = phone)
         # Now we've got all the stuff the database wants to put in the addresses table,
         # we can add and commit to make the addresses table.
-        model.session.add(new_user_address)
-        model.session.commit()
+        model.postgres_session.add(new_user_address)
+        model.postgres_session.commit()
         login_user(new_user)
         
         return redirect(url_for("view_order", duck=request.args.get("duck")))
