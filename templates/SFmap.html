@@ -38,7 +38,8 @@
     	color: '#000'
 
 		};
-		// var polyline = L.polyline(line_points, polyline_options).addTo(map);
+		var polyline = L.polyline(line_points, polyline_options).addTo(map);
+
 		// //vert line 0.000250 by 0.000250 degree
 		// for (var i = 0; i < 499; i++){
 		// 	var line_points = [
@@ -64,13 +65,23 @@
 		// 	};
 		// 	var polyline = L.polyline(line_points, polyline_options).addTo(map);
 		// }
+
         //Change building co-ordinates from LatLng to nodes 
 		// //for the a* algorithum.
-		var a = [122.402756, 122.403770, 122.400444, 122.396187, 122.399612, 122.392174, 122.397263, 122.397942, 122.400352, 122.396210, 122.401878, 122.394508, 122.401276, 122.398880, 122.402679, 122.399162, 122.398163, 122.410965, 122.403313, 122.403061, 122.395729, 122.398575, 122.397430, 122.401367, 122.398994, 122.397156, 122.397423, 122.405205, 122.400009, 122.390633, 122.397209, 122.404312, 122.402702, 122.399483, 122.401955, 122.395004, 122.397385, 122.400810, 122.394470, 122.400459, 122.402512, 122.404495, 122.399231, 122.409309, 122.403351, 122.398491];
+
+		//Lng of tall buildings
+		var a = [122.402756, 122.403770, 122.400444, 122.396187, 122.399612, 122.392174,
+				 122.397263, 122.397942, 122.400352, 122.396210, 122.401878, 122.394508,
+				 122.401276, 122.398880, 122.402679, 122.399162, 122.398163, 122.410965,
+				 122.403313, 122.403061, 122.395729, 122.398575, 122.397430, 122.401367,
+				 122.398994, 122.397156, 122.397423, 122.405205, 122.400009, 122.390633,
+				 122.397209, 122.404312, 122.402702, 122.399483, 122.401955, 122.395004,
+				 122.397385, 122.400810, 122.394470, 122.400459, 122.402512, 122.404495,
+				 122.399231, 122.409309, 122.403351, 122.398491];
 		var xlist = [];
 
 		for (var i = 0; i < a.length; i++){
-		//change Lng to x of node
+		//change Lng to x of node in grid
 		if (((122.436000-a[i])*1000000)%100 !== 0){
 			var x = parseInt((122.436000-a[i])*1000000/100); 
 		 	}
@@ -79,11 +90,19 @@
 		 	}
 		xlist.push(x);
 		}
-		var b = [37.795132, 37.792061, 37.792572, 37.790375, 37.794430, 37.785728, 37.790447, 37.792801, 37.789520, 37.795254, 37.789810, 37.793236, 37.790363, 37.791775, 37.788738, 37.790470, 37.791172, 37.785347, 37.789165, 37.790554, 37.791744, 37.788483, 37.794033, 37.786339, 37.792572, 37.791203, 37.791885, 37.792824, 37.786674, 37.789383, 37.793186, 37.785385, 37.791359, 37.788761, 37.786644, 37.791176, 37.795090, 37.789204, 37.791813, 37.793839, 37.790421, 37.786320, 37.795593, 37.787701, 37.793938, 37.794949];
+		//Lat of tall buildings
+		var b = [37.795132, 37.792061, 37.792572, 37.790375, 37.794430, 37.785728,
+				 37.790447, 37.792801, 37.789520, 37.795254, 37.789810, 37.793236,
+				 37.790363, 37.791775, 37.788738, 37.790470, 37.791172, 37.785347,
+				 37.789165, 37.790554, 37.791744, 37.788483, 37.794033, 37.786339,
+				 37.792572, 37.791203, 37.791885, 37.792824, 37.786674, 37.789383,
+				 37.793186, 37.785385, 37.791359, 37.788761, 37.786644, 37.791176,
+				 37.795090, 37.789204, 37.791813, 37.793839, 37.790421, 37.786320,
+				 37.795593, 37.787701, 37.793938, 37.794949];
 		var ylist = [];
 
 		for (var i = 0; i < b.length; i++){	
-		//change Lat to y of node
+		//change Lat to y of node in grid
 		if (((37.800000-b[i])*1000000)%100 !== 0){
 		 	var y = parseInt((37.800000-b[i])*1000000/100); 
 		 	}
@@ -93,45 +112,38 @@
 		ylist.push(y); 	
 		}
 		console.log(xlist,ylist);
-		console.log(xlist[34],ylist[34]);
-		console.log(xlist[35],ylist[35]);
-		console.log(xlist[36],ylist[36]);
+		var e = [-4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,
+				 -4,-3,-2,-1,0,1,2,3,4,];
+
+		var g = [-4,-4,-4,-4,-4,-4,-4,-4,-4,
+				 -3,-3,-3,-3,-3,-3,-3,-3,-3,
+				 -2,-2,-2,-2,-2,-2,-2,-2,-2,
+				 -1,-1,-1,-1,-1,-1,-1,-1,-1,
+				 0,0,0,0,0,0,0,0,0,
+				 1,1,1,1,1,1,1,1,1,
+				 2,2,2,2,2,2,2,2,2,
+				 3,3,3,3,3,3,3,3,3,
+				 4,4,4,4,4,4,4,4,4];
+
 		//build a a* grid of 500 width by 200 height
 		var grid = new PF.Grid(500, 200);
-        //set nodes of all building nodes + 8 surrounding nodes
-        //to be un-walkable.
-        for (var i = 0; i < 46; i++){
-
-	        grid.setWalkableAt(xlist[i], ylist[i], false);
-	        //nodes immediately adjacent to xlist[i] and ylist[i]
-	        grid.setWalkableAt(xlist[i]-1, ylist[i]-1, false);
-	        grid.setWalkableAt(xlist[i], ylist[i]-1, false);
-	        grid.setWalkableAt(xlist[i]+1, ylist[i]-1, false);
-	        grid.setWalkableAt(xlist[i]-1, ylist[i], false);
-	        grid.setWalkableAt(xlist[i]+1, ylist[i], false);
-	        grid.setWalkableAt(xlist[i]-1, ylist[i]+1, false);
-	        grid.setWalkableAt(xlist[i], ylist[i]+1, false);
-	        grid.setWalkableAt(xlist[i]+1, ylist[i]+1, false);
-	        //nodes adjacent to the above nodes
-	        grid.setWalkableAt(xlist[i]-2, ylist[i]-2, false);
-	        grid.setWalkableAt(xlist[i]-1, ylist[i]-2, false);
-	        grid.setWalkableAt(xlist[i], ylist[i]-2, false);
-	        grid.setWalkableAt(xlist[i]+1, ylist[i]-2, false);
-	        grid.setWalkableAt(xlist[i]+2, ylist[i]-2, false);
-	        grid.setWalkableAt(xlist[i]-2, ylist[i]-1, false);
-	        grid.setWalkableAt(xlist[i]+2, ylist[i]-1, false);
-	        grid.setWalkableAt(xlist[i]-2, ylist[i], false);
-	        grid.setWalkableAt(xlist[i]+2, ylist[i], false);
-	        grid.setWalkableAt(xlist[i]-2, ylist[i]+1, false);
-	        grid.setWalkableAt(xlist[i]+2, ylist[i]+1, false);
-	        grid.setWalkableAt(xlist[i]-2, ylist[i]+2, false);
-	        grid.setWalkableAt(xlist[i]-1, ylist[i]+2, false);
-	        grid.setWalkableAt(xlist[i], ylist[i]+2, false);
-	        grid.setWalkableAt(xlist[i]+1, ylist[i]+2, false);
-	        grid.setWalkableAt(xlist[i]+2, ylist[i]+2, false);  
-       		
-       		console.log(grid);
-        }
+        //set nodes of all building(>380 feet) nodes to be un-walkable.
+        //The building footprint is assumed to be 11x11 nodes length and width.
+        for (var i = 0; i < xlist.length; i++)
+        {
+        	for (var j = 0; j < e.length; j++)
+        	{	
+        		grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
+        	}
+        }	
+        console.log(grid);	
       
             //build a path-finder with AStarFinder and using chebyshev heuristic 
             var finder = new PF.AStarFinder({
@@ -142,12 +154,6 @@
             //To find a path from delivery center(420, 38) to customer address(a, b), (Note: both the start point and end point should be walkable):
             var path = finder.findPath(420, 38, 250, 199, grid);
 
-            console.log(path);
-
-            //Change nodes back to LatLng
-
-
-
         // Draw flight path
 		// Create lat,lon points from the 'path' arrays.
 		var line_points = [];
@@ -156,17 +162,48 @@
 
 				line_points.push(p);
 				}
-		console.log(line_points);		
+				
 		// Define polyline options
 		// http://leafletjs.com/reference.html#polyline
 		var polyline_options = {
     	color: '#000'
 		};
-
-		// Defining a polygon here instead of a polyline will connect the
-		// endpoints and fill the path.
+		//Draw polyline (flight path) on map
 		// http://leafletjs.com/reference.html#polygon
 		var polyline = L.polyline(line_points, polyline_options).addTo(map);
+
+// 		// Generate a GeoJSON line: you can load GeoJSON via AJAX, or
+// // generate it some other way
+// var geojson = { type: 'LineString', coordinates: [line_points]};
+// start = [37.796118, -122.393960],
+//     momentum = [3, 3];
+// for (var i = 0; i < 300; i++) {
+//     start[0] += momentum[0];
+//     start[1] += momentum[1];
+//     if (start[1] > 60 || start[1] < -60) momentum[1] *= -1;
+//     if (start[0] > 170 || start[0] < -170) momentum[0] *= -1;
+    
+// geojson.coordinates.push(start.slice());
+// }
+
+// var geojsonLayer = L.geoJson(geojson).addTo(map),
+//     marker = L.marker([0, 0], {
+//         icon: L.mapbox.marker.icon()
+//     }).addTo(map),
+//     j = 0;
+
+// tick();
+//     // set the marker to be at the same point as one of the segments
+//     // of the line
+//     marker.setLatLng(L.latLng(
+//         geojson.coordinates[j][1],
+//         geojson.coordinates[j][0]));
+
+//     // move to the next point in the line or loop to the first point if
+//     // j runs off the end of the array
+//     if (++j < geojson.coordinates.length) setTimeout(tick, 100);
+// }
+
 		</script>
               
 	</body>

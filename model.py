@@ -4,7 +4,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine, ForeignKey
-from sqlalchemy import Column, Integer, String, DateTime, Text
+from sqlalchemy import Column, Integer, String, DateTime, Text, Numeric
 
 from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
@@ -49,6 +49,8 @@ class Address(postgres_Base):
     zipcode = Column(Integer, nullable=False)
     country = Column(Text, nullable=False)
     phone = Column(Integer, nullable=True)
+    lat = Column(Numeric(10, 7), nullable=True)
+    lng = Column(Numeric(10, 7), nullable=True)
 
     user = relationship("User", backref="addresses")
 
@@ -81,6 +83,7 @@ class DuckOrder(postgres_Base):
     duck = relationship("Duck", backref="duckorders")
     
 def create_tables():
+    postgres_Base.metadata.drop_all(postgres_engine)
     postgres_Base.metadata.create_all(postgres_engine)
 
 if __name__ == "__main__":
