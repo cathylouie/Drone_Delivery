@@ -1,5 +1,7 @@
 import config
 import bcrypt
+import requests
+
 from datetime import datetime
 
 from sqlalchemy.ext.declarative import declarative_base
@@ -10,15 +12,15 @@ from sqlalchemy.orm import sessionmaker, scoped_session, relationship, backref
 
 from flask.ext.login import UserMixin
 
-postgres_engine = create_engine(config.DB_URL, echo=True) 
-postgres_session = scoped_session(sessionmaker(bind=postgres_engine,
+engine = create_engine(config.DB_URL, echo=True) 
+session = scoped_session(sessionmaker(bind=engine,
                                                autocommit = False,
                                                autoflush = False))
 
-postgres_Base = declarative_base()
-postgres_Base.query = postgres_session.query_property()
+Base = declarative_base()
+Base.query = session.query_property()
 
-class User(postgres_Base, UserMixin):
+class User(Base, UserMixin):
     __tablename__ = "users" 
     id = Column(Integer, primary_key=True)
     email = Column(String(64), nullable=False)
@@ -36,7 +38,7 @@ class User(postgres_Base, UserMixin):
         password = password.encode("utf-8")
         return bcrypt.hashpw(password, self.salt.encode("utf-8")) == self.password
 
-class Address(postgres_Base):
+class Address(Base):
     __tablename__ = "addresses"
     
     id = Column(Integer, primary_key=True)
@@ -54,7 +56,27 @@ class Address(postgres_Base):
 
     user = relationship("User", backref="addresses")
 
-class Order(postgres_Base):
+    def geocode(self):
+        if self.lat == None:
+
+            self.address12=self.address1.replace(" ","+")
+            self.city2=self.city.replace(" ","+")
+            address = "%s+%s+%s" % (self.address12, self.city2, self.state)
+
+            url="https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCeMBBKrZKuJdpfnmzj7roq5XO2Q1740aY&address=%s&sensor=false" % address
+
+            r = requests.get(url)
+           # print "response: %r" % r.json()
+            jsongeocode = r.json()
+
+            latlng = jsongeocode["results"][0]["geometry"]["location"]
+            self.lat = latlng["lat"]
+            self.lng = latlng["lng"]
+
+            #print "lat: %s, lng: %s" % (self.lat, self.lng)
+
+
+class Order(Base):
     __tablename__ = "orders"
 
     id = Column(Integer, primary_key=True)
@@ -62,7 +84,7 @@ class Order(postgres_Base):
 
     user = relationship("User", backref="orders")
     
-class Duck(postgres_Base):
+class Duck(Base):
     __tablename__ = "ducks"
 
     id = Column(Integer, primary_key=True)
@@ -71,7 +93,7 @@ class Duck(postgres_Base):
     price = Column(String(10), nullable=False)
     bio = Column(Text, nullable=False)
 
-class DuckOrder(postgres_Base):
+class DuckOrder(Base):
     __tablename__ = "duckorders"
 
     id = Column(Integer, primary_key=True)
@@ -83,8 +105,8 @@ class DuckOrder(postgres_Base):
     duck = relationship("Duck", backref="duckorders")
     
 def create_tables():
-    postgres_Base.metadata.drop_all(postgres_engine)
-    postgres_Base.metadata.create_all(postgres_engine)
+    #Base.metadata.drop_all(engine)
+    Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
     create_tables()

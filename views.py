@@ -25,7 +25,11 @@ Markdown(app)
 
 @app.route("/SFmap")
 def SFmap():
-    return render_template("SFmap.html")
+    a = model.session.query(Address).filter_by(user_id=current_user.id).one()
+    lat = a.lat
+    lng = a.lng
+    
+    return render_template("SFmap.html", lat = lat, lng = lng)
 
 @app.route("/path_finding")
 def pathFinding():
@@ -43,7 +47,7 @@ def duck_list():
 @login_required
 def view_order():
     duck_id = request.args.get("duck")
-    d = model.postgres_session.query(Duck).get(duck_id)
+    d = model.session.query(Duck).get(duck_id)
     pic = d.pic
     name = d.name
     price = d.price
@@ -61,26 +65,37 @@ def view_order():
 def confirm_order():
     duck_id = request.args.get("duck")
     new_order = Order(user_id=current_user.id)
-    model.postgres_session.add(new_order)
-    model.postgres_session.commit()
+    model.session.add(new_order)
+    model.session.commit()
     #This will request the new_order.id that was just commited for the DuckOrder tables 
-    model.postgres_session.refresh(new_order)
+    model.session.refresh(new_order)
 
     qty = request.form.get("qty")
 
     new_duckorder = DuckOrder(order_id=new_order.id, duck_id=request.args.get("duck"), qty=qty)
 
-    model.postgres_session.add(new_duckorder)
-    model.postgres_session.commit()
+    model.session.add(new_duckorder)
+    model.session.commit()
 
-    a = model.postgres_session.query(Address).filter_by(user_id=current_user.id).one()
+    a = model.session.query(Address).filter_by(user_id=current_user.id).one()
     address1 = a.address1
     address2 = a.address2
     city = a.city
     state = a.state
     zipcode = a.zipcode
     country = a.country
+    lat = a.lat
+    lng = a.lng
 
+    if a.lat <= 37.8 and a.lat>= 37.78 and a.lng <= -122.386 and a.lng >= -122.436:
+        return render_template("confirm_order2.html", duck_id=request.args.get("duck"), 
+                                                    order_id=new_order.id,
+                                                    address1 = a.address1,
+                                                    address2 = a.address2,
+                                                    city = a.city,
+                                                    state = a.state,
+                                                    zipcode = a.zipcode,
+                                                    country = a.country)
     return render_template("confirm_order.html", duck_id=request.args.get("duck"), 
                                                     order_id=new_order.id,
                                                     address1 = a.address1,
@@ -89,7 +104,6 @@ def confirm_order():
                                                     state = a.state,
                                                     zipcode = a.zipcode,
                                                     country = a.country)
-    #return redirect(url_for("confirm_order", duck_id=request.args.get("duck"), order_id=new_order.id))
 
 @app.route("/login")
 def login():
@@ -152,31 +166,30 @@ def new_user_reg():
     else:
         new_user = User(email=email, firstname = firstname, surname = surname)#make the new_user object
         new_user.set_password(password)
-        # Queue it up to be put into the database
-        model.postgres_session.add(new_user)
-        # Process all the things and commit to the database
-        model.postgres_session.commit()
-        # Note that new_user is still a variable and it still has all the other info you gave it.
-        # The database has more column that need to be filled in.
-        # We need to ask the database for the information of the new user we have just commited. 
-        # The .refresh() is like making a request to the database for the info of the new_user,
-        # so that we can get the new_user.id that it has just generated to put in our user_id column in 
-        # the addresses table.
-        model.postgres_session.refresh(new_user)
 
-        new_user_address = Address(user_id = new_user.id,
-                                    email = email, 
-                                    address1 = address1, 
-                                    address2 = address2,
-                                    city = city,
-                                    state = state,
-                                    zipcode = zipcode,
-                                    country = country,
-                                    phone = phone)
+        # Queue it up to be put into the database
+        model.session.add(new_user)
+
+        # create a variable to use for input into the addresses table and geocoding
+        a = Address(    email = email, 
+                        address1 = address1, 
+                        address2 = address2,
+                        city = city,
+                        state = state,
+                        zipcode = zipcode,
+                        country = country,
+                        phone = phone)
+        #get LagLng from google api for address input by user in this session
+        a.geocode()
+        # append address info including latlng of the new user to the adresses table
+        new_user.addresses.append(a)
+
         # Now we've got all the stuff the database wants to put in the addresses table,
         # we can add and commit to make the addresses table.
-        model.postgres_session.add(new_user_address)
-        model.postgres_session.commit()
+        model.session.commit()
+
+        #model.postgres_session.refresh(new_user)
+
         login_user(new_user)
         
         return redirect(url_for("view_order", duck=request.args.get("duck")))

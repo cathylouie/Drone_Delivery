@@ -1,7 +1,7 @@
 import model
 import csv
 
-def load_ducks(postgres_session):
+def load_ducks(session):
     with open("seed_data/u.duck") as f:
         reader = csv.reader(f, delimiter="|")
         for row in reader:
@@ -12,13 +12,13 @@ def load_ducks(postgres_session):
                             pic=pic,
                             price=price,
                             bio=bio)
-            postgres_session.add(u)
-            postgres_session.commit()
+            session.add(u)
+            session.commit()
 
-def main(postgres_session):
+def main(session):
     # You'll call the load_* functions with the session as an argument
-    load_ducks(postgres_session)
+    load_ducks(session)
 
 if __name__ == "__main__":
-    s = model.postgres_session
+    s = model.session
     main(s)

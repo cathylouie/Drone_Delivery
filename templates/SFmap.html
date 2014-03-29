@@ -151,8 +151,29 @@
             	allowDiagonal: true,
             	dontCrossCorners: true
             });
-            //To find a path from delivery center(420, 38) to customer address(a, b), (Note: both the start point and end point should be walkable):
-            var path = finder.findPath(420, 38, 250, 199, grid);
+
+            //change user address from latlng to grid nodes.
+            //change Lng to x of node in grid
+            //console.log({{lat}},{{lng}});
+            var lng = -({{lng}});
+            console.log(lng);
+			if (((122.436000-lng)*1000000)%100 !== 0){
+			var x1 = parseInt((122.436000-lng)*1000000/100); 
+		 	}
+			else
+		 	{x1 = (122.436000-lng)*1000000/100;
+		 	}
+            //change Lat to y of node in grid
+			if (((37.800000-{{lat}})*1000000)%100 !== 0){
+		 	var y1 = parseInt((37.800000-{{lat}})*1000000/100); 
+		 	}
+			else
+		 	{y1 = (37.800000-{{lat}})*1000000/100;
+		 	}
+		 	
+		 	console.log(x1, y1);
+            //To find a path from delivery center(420, 38) to customer address(x1, y1), (Note: both the start point and end point should be walkable):
+            var path = finder.findPath(420, 38, x1, y1, grid);
 
         // Draw flight path
 		// Create lat,lon points from the 'path' arrays.
@@ -162,7 +183,7 @@
 
 				line_points.push(p);
 				}
-				
+		console.log(line_points);		
 		// Define polyline options
 		// http://leafletjs.com/reference.html#polyline
 		var polyline_options = {
