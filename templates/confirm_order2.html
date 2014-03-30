@@ -10,6 +10,20 @@
                 color: #000088;
                 
              }
+             .orderbox {
+                border: solid blue 5px;
+                font-size: 180%;
+                width: 700px;
+                margin-right: 10px;
+                margin-left: 10px;
+                padding: 10px 10px 10px 10px;
+                float:left;
+             }
+
+             #delivery2 {
+                color: #870071;
+             }
+
         </style>
     </head>
     <body>
@@ -17,14 +31,15 @@
             Order confirmation
         </h1>
 
-        <div id = "confirm_order">
-        	<p>Thank you for shopping at the Duckie Store</p>   
+        <div class = "orderbox" id = "confirm_order">
+        	<p>Thank you for shopping at the Duckie Store.</p>   
             <p>Your delivery address is as followed:</p><br>
                 <p> {{address1}}</p>
                 <p> {{address2}}</p>
                 <p> {{city}}</p>
                 <p> {{state}}{{zipcode}}</p>
-                <p> {{country}}</p>
+                <p> {{country}}</p><br>
+            <p class="text" id = "delivery2">Your order will be delivered by our next available drone.</p>    
         </div>
     
         <div class="form" id="order1">
@@ -32,7 +47,7 @@
         </div>
 
         <div class="form" id="order2">
-        <a class="btn btn-info btn-lg" href = "/SFmap">Click to see drone's preferred flight path</a>
+        <a class="btn btn-primary btn-lg" href = "/SFmap">Click to see drone's preferred flight path</a>
         </div>        
 
     </body>

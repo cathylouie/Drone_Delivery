@@ -6,24 +6,38 @@
 		<meta name='viewport' content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' />
 		<script src='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.js'></script>
 		<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
-		<link rel="stylesheet" href="/static/css/bootstrap.min.css">
-         <!-- <script type="text/javascript" src="/static/js/bootstrap.js"></script> -->
-        <script type="text/javascript" src="/static/js/jquery-2.0.3.min.js"></script>
+		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <script type="text/javascript" src="/static/js/pathfinding-browser.min.js"></script>
-
+       
 		<style>
   		body { margin:0; padding:0; }
-  		#map { position:absolute; top:0; bottom:0; width:100%; }
+  		#map { position:absolute; top:0; bottom:0; width:100%;} 
+  		#order2 { position:relative;
+  				float:right; }
 		</style>
+
 	</head>
 	<body>
 		<div id='map'></div>
+
+		<div class="form" id="order2">
+        <a class="btn btn-primary btn-lg" href = "/duck_list">Return to Our Duckies</a>
+        </div>
+
 		<script>
-		//This import the map from mapbox. The map was created with the mapbox API and markers are place for all the tall buildings. A csv file of all the LatLong info of buildings over 118m are created by getting the data from Skyscrapperpage.com. This csv file is then loaded on to the mapbox API to draw the SFmap.
+//This import the map from mapbox.
+//The map was created with the mapbox API and markers are place for all the
+//tall buildings over 380 feet (at the time of this program, there is a FAA rule
+//that prohibit drones to fly over 400 feet). 
+//A csv file of all the LatLng info of buildings over 380 feet were created by
+//getting the data from Skyscrapperpage.com. 
+//This csv file is then loaded onto the mapbox API to draw the SFmap.
 		var map = L.mapbox.map('map', 'cathylouie.hk0a096c')
     	.setView([37.79, -122.41], 15);
 
-    	// Create array of lat,lon points for map area
+//Define and draw the drone delivery area
+    	//array of lat,lng points that define the delivery area 
+    	//(where the a* path finding algorithm will take place)
 		var line_points = [
     	[37.800000, -122.436000],
     	[37.800000, -122.386000],
@@ -32,13 +46,16 @@
     	[37.800000, -122.436000]
 		];
 
-		// Define polyline options
+		// define polyline options 
 		// http://leafletjs.com/reference.html#polyline
 		var polyline_options = {
     	color: '#000'
-
 		};
+		//this draws the delivery area on the map
 		var polyline = L.polyline(line_points, polyline_options).addTo(map);
+
+//---------------------keeping for reference------------------------------------
+//This draw the grid defined in line 159
 
 		// //vert line 0.000250 by 0.000250 degree
 		// for (var i = 0; i < 499; i++){
@@ -65,11 +82,12 @@
 		// 	};
 		// 	var polyline = L.polyline(line_points, polyline_options).addTo(map);
 		// }
+//---------------------keeping for reference------------------------------------
 
-        //Change building co-ordinates from LatLng to nodes 
-		// //for the a* algorithum.
+//Change building co-ordinates from LatLng to nodes in grid defined in line 159
+//for the a* algorithum.
 
-		//Lng of tall buildings
+		//lng of tall buildings
 		var a = [122.402756, 122.403770, 122.400444, 122.396187, 122.399612, 122.392174,
 				 122.397263, 122.397942, 122.400352, 122.396210, 122.401878, 122.394508,
 				 122.401276, 122.398880, 122.402679, 122.399162, 122.398163, 122.410965,
@@ -78,10 +96,10 @@
 				 122.397209, 122.404312, 122.402702, 122.399483, 122.401955, 122.395004,
 				 122.397385, 122.400810, 122.394470, 122.400459, 122.402512, 122.404495,
 				 122.399231, 122.409309, 122.403351, 122.398491];
+		//make array of x co-ordinate of nodes in the grid
 		var xlist = [];
-
 		for (var i = 0; i < a.length; i++){
-		//change Lng to x of node in grid
+		//change lng to x co-ordinate of nodes in the grid
 		if (((122.436000-a[i])*1000000)%100 !== 0){
 			var x = parseInt((122.436000-a[i])*1000000/100); 
 		 	}
@@ -90,7 +108,8 @@
 		 	}
 		xlist.push(x);
 		}
-		//Lat of tall buildings
+
+		//lat of tall buildings
 		var b = [37.795132, 37.792061, 37.792572, 37.790375, 37.794430, 37.785728,
 				 37.790447, 37.792801, 37.789520, 37.795254, 37.789810, 37.793236,
 				 37.790363, 37.791775, 37.788738, 37.790470, 37.791172, 37.785347,
@@ -99,10 +118,10 @@
 				 37.793186, 37.785385, 37.791359, 37.788761, 37.786644, 37.791176,
 				 37.795090, 37.789204, 37.791813, 37.793839, 37.790421, 37.786320,
 				 37.795593, 37.787701, 37.793938, 37.794949];
+		//make array of y co-ordinate of nodes in the grid
 		var ylist = [];
-
 		for (var i = 0; i < b.length; i++){	
-		//change Lat to y of node in grid
+		//change lat to y co-ordinate of nodes in the grid
 		if (((37.800000-b[i])*1000000)%100 !== 0){
 		 	var y = parseInt((37.800000-b[i])*1000000/100); 
 		 	}
@@ -111,7 +130,11 @@
 		 	}
 		ylist.push(y); 	
 		}
-		console.log(xlist,ylist);
+
+		console.log(xlist,ylist); //print on console for debugging
+//Define the footprint of all tall buildings, assuming them to be 11x11 nodes,
+//length and width, roughly the size of a small city block or half a big city block.
+		//list of x co-ordinate of nodes for building width in grid 
 		var e = [-4,-3,-2,-1,0,1,2,3,4,
 				 -4,-3,-2,-1,0,1,2,3,4,
 				 -4,-3,-2,-1,0,1,2,3,4,
@@ -121,7 +144,7 @@
 				 -4,-3,-2,-1,0,1,2,3,4,
 				 -4,-3,-2,-1,0,1,2,3,4,
 				 -4,-3,-2,-1,0,1,2,3,4,];
-
+		//list of y co-ordinate of nodes for building length in grid
 		var g = [-4,-4,-4,-4,-4,-4,-4,-4,-4,
 				 -3,-3,-3,-3,-3,-3,-3,-3,-3,
 				 -2,-2,-2,-2,-2,-2,-2,-2,-2,
@@ -132,98 +155,102 @@
 				 3,3,3,3,3,3,3,3,3,
 				 4,4,4,4,4,4,4,4,4];
 
-		//build a a* grid of 500 width by 200 height
+//Define a grid of 500 width by 200 length for the a* path finding algorithm 
 		var grid = new PF.Grid(500, 200);
-        //set nodes of all building(>380 feet) nodes to be un-walkable.
+
+        //set nodes of all building >380 feet to be un-walkable.
         //The building footprint is assumed to be 11x11 nodes length and width.
+        //roughly the side of a small city block or half a big city block.
         for (var i = 0; i < xlist.length; i++)
         {
         	for (var j = 0; j < e.length; j++)
         	{	
         		grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
         	}
-        }	
-        console.log(grid);	
+        }
+
+        console.log(grid);//print on console for debugging
       
-            //build a path-finder with AStarFinder and using chebyshev heuristic 
-            var finder = new PF.AStarFinder({
-                heuristic: PF.Heuristic.chebyshev,
-            	allowDiagonal: true,
-            	dontCrossCorners: true
+//Build a path-finder with AStarFinder and using chebyshev heuristic 
+        var finder = new PF.AStarFinder({
+            heuristic: PF.Heuristic.chebyshev,
+            allowDiagonal: true,
+            dontCrossCorners: true
             });
 
-            //change user address from latlng to grid nodes.
-            //change Lng to x of node in grid
-            //console.log({{lat}},{{lng}});
-            var lng = -({{lng}});
-            console.log(lng);
-			if (((122.436000-lng)*1000000)%100 !== 0){
-			var x1 = parseInt((122.436000-lng)*1000000/100); 
-		 	}
-			else
-		 	{x1 = (122.436000-lng)*1000000/100;
-		 	}
-            //change Lat to y of node in grid
-			if (((37.800000-{{lat}})*1000000)%100 !== 0){
-		 	var y1 = parseInt((37.800000-{{lat}})*1000000/100); 
-		 	}
-			else
-		 	{y1 = (37.800000-{{lat}})*1000000/100;
-		 	}
+//Change delivery address from latlng to grid nodes.
+        //change lng to x co-ordinate of node in grid
+        var lng = -({{lng}});
+        console.log(lng);//print on console for debugging
+		if (((122.436000-lng)*1000000)%100 !== 0){
+		var x1 = parseInt((122.436000-lng)*1000000/100); 
+		}
+		else
+		{x1 = (122.436000-lng)*1000000/100;
+		}
+        //change Lat to y co-ordinate of node in grid
+		if (((37.800000-{{lat}})*1000000)%100 !== 0){
+		var y1 = parseInt((37.800000-{{lat}})*1000000/100); 
+		}
+		else
+		{y1 = (37.800000-{{lat}})*1000000/100;
+		}
 		 	
-		 	console.log(x1, y1);
-            //To find a path from delivery center(420, 38) to customer address(x1, y1), (Note: both the start point and end point should be walkable):
-            var path = finder.findPath(420, 38, x1, y1, grid);
+		console.log(x1, y1);//print on console for debugging
 
-        // Draw flight path
-		// Create lat,lon points from the 'path' arrays.
+//Find a path from delivery center(420, 38) to customer address(x1, y1)
+//Note: both the start point and end point should be walkable
+        var path = finder.findPath(420, 38, x1, y1, grid);
+
+// Draw the prefer flight path
+		// create lat,lng points from the 'path' array.
 		var line_points = [];
 			for (var i = 0; i < path.length; i++){
 				var p = [(37.800000 - path[i][1]*1/10000), - (122.436000 - path[i][0]*1/10000).toFixed(6)];
 
 				line_points.push(p);
 				}
-		console.log(line_points);		
-		// Define polyline options
+
+		console.log(line_points);//print on console for debugging
+
+		// define polyline options
 		// http://leafletjs.com/reference.html#polyline
 		var polyline_options = {
     	color: '#000'
 		};
-		//Draw polyline (flight path) on map
+		//draw polyline (prefer flight path) on map
 		// http://leafletjs.com/reference.html#polygon
 		var polyline = L.polyline(line_points, polyline_options).addTo(map);
 
-// 		// Generate a GeoJSON line: you can load GeoJSON via AJAX, or
-// // generate it some other way
-// var geojson = { type: 'LineString', coordinates: [line_points]};
-// start = [37.796118, -122.393960],
-//     momentum = [3, 3];
-// for (var i = 0; i < 300; i++) {
-//     start[0] += momentum[0];
-//     start[1] += momentum[1];
-//     if (start[1] > 60 || start[1] < -60) momentum[1] *= -1;
-//     if (start[0] > 170 || start[0] < -170) momentum[0] *= -1;
-    
-// geojson.coordinates.push(start.slice());
-// }
+//This make a marker move along the prefer flight path
+		// generate a GeoJSON line from the 'path' array
+		var geojson = { type: 'LineString', coordinates: []};
 
-// var geojsonLayer = L.geoJson(geojson).addTo(map),
-//     marker = L.marker([0, 0], {
-//         icon: L.mapbox.marker.icon()
-//     }).addTo(map),
-//     j = 0;
+		for (var i = 0; i < path.length; i++){
+		var p = [ - (122.436000 - path[i][0]*1/10000).toFixed(6), (37.800000 - path[i][1]*1/10000)]    
+		geojson.coordinates.push(p);
+		}
 
-// tick();
-//     // set the marker to be at the same point as one of the segments
-//     // of the line
-//     marker.setLatLng(L.latLng(
-//         geojson.coordinates[j][1],
-//         geojson.coordinates[j][0]));
+		console.log(geojson);//print on console for debugging
 
-//     // move to the next point in the line or loop to the first point if
-//     // j runs off the end of the array
-//     if (++j < geojson.coordinates.length) setTimeout(tick, 100);
-// }
+		//define moving marker
+		var geojsonLayer = L.geoJson(geojson).addTo(map),
+    	marker = L.marker([0, 0], {
+        	icon: L.mapbox.marker.icon({properties: {'marker-symbol': 'rocket'}})
+    	}).addTo(map),
+    	j = 0;
+
+		tick();
+		function tick() {
+    	// set the marker to be at the same point as one of the segments of the line
+    	marker.setLatLng(L.latLng(
+        	geojson.coordinates[j][1],
+        	geojson.coordinates[j][0]));
+
+    	// move to the next point in the line or loop to the first point if
+    	// j runs off the end of the array
+    	if (++j < geojson.coordinates.length) setTimeout(tick, 100);
+		}
 
 		</script>
               

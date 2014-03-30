@@ -185,10 +185,8 @@ def new_user_reg():
         new_user.addresses.append(a)
 
         # Now we've got all the stuff the database wants to put in the addresses table,
-        # we can add and commit to make the addresses table.
+        # we can add and commit everything to the database.
         model.session.commit()
-
-        #model.postgres_session.refresh(new_user)
 
         login_user(new_user)
         
