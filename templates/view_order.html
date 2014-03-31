@@ -8,15 +8,23 @@
              h1 {
                 font-family: arial;
                 color: #000088;
+                margin-left: 400px;
+                margin-bottom: 40px;
                 
              }
              .duckbox {
-                border: solid blue 5px;
-                width: 280px;
-                margin-right: 10px;
-                margin-left: 10px;
+                width: 350px;
+                margin-right: 80px;
+                margin-left: 400px;
                 padding: 10px 10px 10px 10px;
                 float:left;
+             }
+             .form-control {
+                width:5%;
+             }
+             #order3 {
+                margin-top: 350px;
+                margin-left: 680px;
              }
         </style>
     </head>
@@ -26,21 +34,33 @@
         </h1>
         <div class ="duckbox">
             	<img src="static/img/{{pic}}.jpg" height="225" style="max-width: 225px" id="pic">
-                <p>{{name}}</p><br>
-                <p>{{price}}</p><br>
-            	<p>{{bio}}</p><br>
+                <p style="font-family:arial;color:black;font-size:20px;">{{name}}</p><br>
+                <p style="font-family:arial;color:black;font-size:20px;">{{price}}</p><br>
+            	<p style="font-family:arial;color:black;font-size:20px;">{{bio}}</p><br>
         </div>
 
         <div id = "order">
         	<form action="/confirm_order?duck={{duck_id}}" method="post">
         		<input type="hidden" name="duck" value="{{duck_id}}">
-                <input type="number" name="qty">Qty<br>
-                <input type="submit" value="Order now">
+                <p style="font-family:arial;color:black;font-size:20px;">Qty</p>
+                <select class="form-control" name="qty">
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>                
+                </select><br>
+                <button type="submit" class="btn btn-primary">Order now</button>
         	</form>
         </div>
 
         <div class="form" id="order2">
-        <a class="btn btn-info btn-lg" href = "/duck_list">Return to Our Duckies</a>
+        <a class="btn btn-info btn-default" href = "/duck_list">Return to Our Duckies</a>
+        </div>
+
+        <div class="form" id="order3">
+        <a class="btn btn-primary btn-sm" href = "/logout">Logout</a>
         </div>
 
     </body>

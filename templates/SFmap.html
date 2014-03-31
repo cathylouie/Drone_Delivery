@@ -12,7 +12,8 @@
 		<style>
   		body { margin:0; padding:0; }
   		#map { position:absolute; top:0; bottom:0; width:100%;} 
-  		#order2 { position:relative;
+  		.form { position:relative;
+  				margin-right: 5px;
   				float:right; }
 		</style>
 
@@ -20,8 +21,16 @@
 	<body>
 		<div id='map'></div>
 
-		<div class="form" id="order2">
-        <a class="btn btn-primary btn-lg" href = "/duck_list">Return to Our Duckies</a>
+		<!-- <div class="form" id="order2">
+        <a class="btn btn-primary btn-sm" href = "/duck_list">Return to Our Duckies</a>
+        </div> -->
+
+        <div class="form" id="order3">
+        <a class="btn btn-primary btn-sm" href = "/logout">Logout</a>
+        </div>
+
+        <div class="form" id="order2">
+        <a class="btn btn-primary btn-sm" href = "/duck_list">Return to Our Duckies</a>
         </div>
 
 		<script>
@@ -236,7 +245,7 @@
 		//define moving marker
 		var geojsonLayer = L.geoJson(geojson).addTo(map),
     	marker = L.marker([0, 0], {
-        	icon: L.mapbox.marker.icon({properties: {'marker-symbol': 'rocket'}})
+        	icon: L.mapbox.marker.icon()
     	}).addTo(map),
     	j = 0;
 
@@ -249,7 +258,7 @@
 
     	// move to the next point in the line or loop to the first point if
     	// j runs off the end of the array
-    	if (++j < geojson.coordinates.length) setTimeout(tick, 100);
+    	if (++j < geojson.coordinates.length) setTimeout(tick, 20);
 		}
 
 		</script>

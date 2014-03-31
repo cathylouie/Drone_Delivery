@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, g, session, url_for, flash
 from model import User, Address, Order, Duck, DuckOrder
-from flask.ext.login import LoginManager, login_required, login_user, current_user
+from flask.ext.login import LoginManager, login_required, login_user, current_user, logout_user
 from flaskext.markdown import Markdown
 import config
 import forms
@@ -31,10 +31,6 @@ def SFmap():
     
     return render_template("SFmap.html", lat = lat, lng = lng)
 
-@app.route("/path_finding")
-def pathFinding():
-    return render_template("pathF.html")
-
 @app.route("/")
 def storeFront():
     return render_template("front_page.html")
@@ -52,14 +48,13 @@ def view_order():
     name = d.name
     price = d.price
     bio = d.bio
-
-
     
     return render_template("view_order.html", duck_id=request.args.get("duck"),
                                                 pic = pic,
                                                 name = name,
                                                 price = price,
                                                 bio = bio)
+
 @app.route("/confirm_order", methods=["POST"])
 @login_required
 def confirm_order():
@@ -87,7 +82,7 @@ def confirm_order():
     lat = a.lat
     lng = a.lng
 
-    if a.lat <= 37.8 and a.lat>= 37.78 and a.lng <= -122.386 and a.lng >= -122.436:
+    if a.lat <= 37.8 and a.lat >= 37.78 and a.lng <= -122.386 and a.lng >= -122.436:
         return render_template("confirm_order2.html", duck_id=request.args.get("duck"), 
                                                     order_id=new_order.id,
                                                     address1 = a.address1,
@@ -104,9 +99,16 @@ def confirm_order():
                                                     state = a.state,
                                                     zipcode = a.zipcode,
                                                     country = a.country)
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for("storeFront"))
 
 @app.route("/login")
 def login():
+    if session.get('user_id', None):
+         return redirect(url_for("view_order", duck=request.args.get("duck")))
     if request.args.get("duck"):
         return render_template("login.html", duck=request.args.get("duck"))
     return render_template("login.html", duck=None)

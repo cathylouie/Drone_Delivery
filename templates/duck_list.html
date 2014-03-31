@@ -8,15 +8,19 @@
              h1 {
                 font-family: arial;
                 color: #000088;
+                margin-left: 611px;
                 
              }
              .duckbox {
-                border: solid blue 5px;
+                border: solid blue 1px;
                 width: 280px;
                 margin-right: 10px;
                 margin-left: 10px;
                 padding: 10px 10px 10px 10px;
                 float:left;
+             }
+             #d1 {
+                margin-left: 270px;
              }
         </style>
     </head>
@@ -24,18 +28,20 @@
         <h1>
             Our Duckies
         </h1>
-        <div class ="duckbox">
+        <div class ="duckbox" id="d1">
             <img src="static/img/duck1.jpg" height="225" style="max-width: 225px" id="duck1">
-            <p>Traditional</p>
-            <a class="btn btn-default" href = "/login?duck=1">Like this</a>
+            <p style="font-family:arial;color:black;font-size:20px;">Traditional</p>
+            <a class="btn btn-warning" href = "/login?duck=1">Buy</a>
         </div>
-        <div class ="duckbox">
+        <div class ="duckbox" id="d2">
             <img src="static/img/duck2.jpg" id="duck2">
-            <p>Polka dot Pink </p><a class="btn btn-default" href = "/login?duck=2">Like this</a>
+            <p style="font-family:arial;color:black;font-size:20px;">Polka dot Pink</p>
+            <a class="btn btn-warning" href = "/login?duck=2">Buy</a>
         </div>
-        <div class ="duckbox">
+        <div class ="duckbox" id="d3">
             <img src="static/img/duck3.jpg" id="duck3">
-            <p>Firery</p><a class="btn btn-default" href = "/login?duck=3">Like this</a>
+            <p style="font-family:arial;color:black;font-size:20px;">Firery</p>
+            <a class="btn btn-warning" href = "/login?duck=3">Buy</a>
         </div>
     </body>
 </html>

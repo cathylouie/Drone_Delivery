@@ -14,8 +14,8 @@ from flask.ext.login import UserMixin
 
 engine = create_engine(config.DB_URL, echo=True) 
 session = scoped_session(sessionmaker(bind=engine,
-                                               autocommit = False,
-                                               autoflush = False))
+                                        autocommit = False,
+                                        autoflush = False))
 
 Base = declarative_base()
 Base.query = session.query_property()
@@ -105,7 +105,7 @@ class DuckOrder(Base):
     duck = relationship("Duck", backref="duckorders")
     
 def create_tables():
-    #Base.metadata.drop_all(engine)
+    #Base.metadata.drop_all(engine) #this is for droping all tables for a fresh start.
     Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
