@@ -7,8 +7,10 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <title>Google Earth API Sample</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="https://www.google.com/jsapi?key=AIzaSyDOCgdtvX4VGZldJs1JLpT60CXDsqYkN_A" type="text/javascript"></script>
     <script type="text/javascript">
+
     var ge;
     
     google.load("earth", "1");
@@ -22,42 +24,44 @@ Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
       ge.getWindow().setVisibility(true);
 
 
-          // add a navigation control
+      // add a navigation control
       ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
     
       // add some layers
       ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
       ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BUILDINGS, true);
     
       // Create the placemark
-var lineStringPlacemark = ge.createPlacemark('');
+      var lineStringPlacemark = ge.createPlacemark('');
 
-// Create the LineString; set it to extend down to the ground
-// and set the altitude mode
-var lineString = ge.createLineString('');
-lineStringPlacemark.setGeometry(lineString);
-lineString.setExtrude(false);
-lineString.setAltitudeMode(ge.ALTITUDE_RELATIVE_TO_GROUND);
+      // Create the LineString; set Extrude to false so the line does not extend to ground
+      // and set the altitude mode
+      var lineString = ge.createLineString('');
+      lineStringPlacemark.setGeometry(lineString);
+      lineString.setExtrude(false);
+      lineString.setAltitudeMode(ge.ALTITUDE_RELATIVE_TO_GROUND);
 
-// Add LineString points
-{% for coords in coords_list %}
-lineString.getCoordinates().pushLatLngAlt({{coords[0]}}, {{coords[1]}}, 380);
-{%endfor%}
+      // Add LineString points
+      lineString.getCoordinates().pushLatLngAlt(37.7962, -122.394, 0);
+      {% for coords in coords_list %}
+      lineString.getCoordinates().pushLatLngAlt({{coords[0]}}, {{coords[1]}}, 120);
+      {%endfor%}
 
-// Create a style and set width and color of line
-lineStringPlacemark.setStyleSelector(ge.createStyle(''));
-var lineStyle = lineStringPlacemark.getStyleSelector().getLineStyle();
-lineStyle.setWidth(5);
-lineStyle.getColor().set('9900ffff');  // aabbggrr format
+      // Create a style and set width and color of line
+      lineStringPlacemark.setStyleSelector(ge.createStyle(''));
+      var lineStyle = lineStringPlacemark.getStyleSelector().getLineStyle();
+      lineStyle.setWidth(5);
+      lineStyle.getColor().set('9900ffff');  // aabbggrr format
 
-// Add the feature to Earth
-ge.getFeatures().appendChild(lineStringPlacemark);
+      // Add the feature to Earth
+      ge.getFeatures().appendChild(lineStringPlacemark);
     
       // Fly to the path
       var la = ge.createLookAt('');
-      la.set(37.7962, -122.394, 500, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 45, 900);
+      la.set(37.792, -122.393, 500, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 45, 900);
       ge.getView().setAbstractView(la);  
-    
+      //just for debugging purposes
       document.getElementById('installed-plugin-version').innerHTML = ge.getPluginVersion().toString();
     }
     
@@ -65,11 +69,28 @@ ge.getFeatures().appendChild(lineStringPlacemark);
     }
 
     </script>
+    <style>
+    body { margin:0; padding:0; }
+      #map3d { position:absolute; top:55px; bottom:0; left:61px; width:91%; height:91%;} 
+      .form { position:relative;
+          margin-right: 5px;
+          float:right; }
+    </style>
   </head>
   <body onload="init()" style="font-family: arial, sans-serif; font-size: 13px; border: 0;">
-    <div id="map3d" style="width: 800px; height: 680px;"></div>
-    <br>
-    <div>Installed Plugin Version: <span id="installed-plugin-version" style="font-weight: bold;">Loading...</span></div>
+    <div id="map3d"></div>
+    
+    <div>Installed Plugin Version: <span id="installed-plugin-version" style="font-weight:  bold;">Loading...</span>
+    </div>
+
+    <div class="form" id="order3">
+      <a class="btn btn-primary btn-sm" href = "/logout">Logout</a>
+    </div>
+
+    <div class="form" id="order2">
+      <a class="btn btn-primary btn-sm" href = "/duck_list">Return to Our Duckies</a>
+    </div>
+
   </body>
 </html>
 ​
