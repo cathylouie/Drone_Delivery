@@ -5,6 +5,7 @@ from flaskext.markdown import Markdown
 import config
 import forms
 import model
+import json
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -22,6 +23,12 @@ def load_user(user_id):
 
 # Adding markdown capability to the app
 Markdown(app)
+
+@app.route("/earth", methods=["POST"])
+def earth():
+    coords_list = json.loads(request.form.get("coords",[]))
+    
+    return render_template("earth.html", coords_list=coords_list)
 
 @app.route("/SFmap")
 def SFmap():

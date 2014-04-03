@@ -8,7 +8,8 @@
 		<link href='https://api.tiles.mapbox.com/mapbox.js/v1.6.2/mapbox.css' rel='stylesheet' />
 		<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
         <script type="text/javascript" src="/static/js/pathfinding-browser.min.js"></script>
-       
+       	<script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
 		<style>
   		body { margin:0; padding:0; }
   		#map { position:absolute; top:0; bottom:0; width:100%;} 
@@ -31,6 +32,10 @@
 
         <div class="form" id="order2">
         <a class="btn btn-primary btn-sm" href = "/duck_list">Return to Our Duckies</a>
+        </div>
+
+        <div class="form" id="order4">
+        <a class="btn btn-primary btn-sm">Click to see the 3D flight path</a>
         </div>
 
 		<script>
@@ -221,6 +226,14 @@
 				}
 
 		console.log(line_points);//print on console for debugging
+		// add an event listener to a button
+		// use these 3 lines in that function
+		$("#order4").click(function(){
+			var post_line_points = JSON.stringify(line_points);
+			$('body').append('<form id="form" action="/earth" method="POST"><input name="coords" value="' + post_line_points + '">')
+			$('#form').submit()
+		})
+		
 
 		// define polyline options
 		// http://leafletjs.com/reference.html#polyline

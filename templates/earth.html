@@ -1,0 +1,75 @@
+<!--
+You are free to copy and use this sample in accordance with the terms of the
+Apache license (http://www.apache.org/licenses/LICENSE-2.0.html)
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Google Earth API Sample</title>
+    <script src="https://www.google.com/jsapi?key=AIzaSyDOCgdtvX4VGZldJs1JLpT60CXDsqYkN_A" type="text/javascript"></script>
+    <script type="text/javascript">
+    var ge;
+    
+    google.load("earth", "1");
+    
+    function init() {
+      google.earth.createInstance('map3d', initCallback, failureCallback);
+    }
+    
+    function initCallback(instance) {
+      ge = instance;
+      ge.getWindow().setVisibility(true);
+
+
+          // add a navigation control
+      ge.getNavigationControl().setVisibility(ge.VISIBILITY_AUTO);
+    
+      // add some layers
+      ge.getLayerRoot().enableLayerById(ge.LAYER_BORDERS, true);
+      ge.getLayerRoot().enableLayerById(ge.LAYER_ROADS, true);
+    
+      // Create the placemark
+var lineStringPlacemark = ge.createPlacemark('');
+
+// Create the LineString; set it to extend down to the ground
+// and set the altitude mode
+var lineString = ge.createLineString('');
+lineStringPlacemark.setGeometry(lineString);
+lineString.setExtrude(false);
+lineString.setAltitudeMode(ge.ALTITUDE_RELATIVE_TO_GROUND);
+
+// Add LineString points
+{% for coords in coords_list %}
+lineString.getCoordinates().pushLatLngAlt({{coords[0]}}, {{coords[1]}}, 380);
+{%endfor%}
+
+// Create a style and set width and color of line
+lineStringPlacemark.setStyleSelector(ge.createStyle(''));
+var lineStyle = lineStringPlacemark.getStyleSelector().getLineStyle();
+lineStyle.setWidth(5);
+lineStyle.getColor().set('9900ffff');  // aabbggrr format
+
+// Add the feature to Earth
+ge.getFeatures().appendChild(lineStringPlacemark);
+    
+      // Fly to the path
+      var la = ge.createLookAt('');
+      la.set(37.7962, -122.394, 500, ge.ALTITUDE_RELATIVE_TO_GROUND, 0, 45, 900);
+      ge.getView().setAbstractView(la);  
+    
+      document.getElementById('installed-plugin-version').innerHTML = ge.getPluginVersion().toString();
+    }
+    
+    function failureCallback(errorCode) {
+    }
+
+    </script>
+  </head>
+  <body onload="init()" style="font-family: arial, sans-serif; font-size: 13px; border: 0;">
+    <div id="map3d" style="width: 800px; height: 680px;"></div>
+    <br>
+    <div>Installed Plugin Version: <span id="installed-plugin-version" style="font-weight: bold;">Loading...</span></div>
+  </body>
+</html>
+​
