@@ -48,13 +48,14 @@
 //Define and draw the drone delivery area
     	//array of lat,lng points that define the delivery area 
     	//(where the a* path finding algorithm will take place)
-		var line_points = [
-    	[37.800000, -122.436000],
-    	[37.800000, -122.386000],
-    	[37.780000, -122.386000],
-    	[37.780000, -122.436000],
-    	[37.800000, -122.436000]
-		];
+    	//upper left corner = ulc, upper right corner = urc, 
+    	//lower right corner = lrc, lower left corner = llc
+    	ulc = [37.800000, -122.436000];
+    	urc = [37.800000, -122.386000];
+    	lrc = [37.780000, -122.386000];
+    	llc = [37.780000, -122.436000];
+
+		var line_points = [ ulc, urc, lrc, llc, ulc];
 
 		// define polyline options 
 		// http://leafletjs.com/reference.html#polyline
@@ -94,7 +95,7 @@
 		// }
 //---------------------keeping for reference------------------------------------
 
-//Change building co-ordinates from LatLng to nodes in grid defined in line 159
+//Change building coordinates from LatLng to nodes in grid defined in line 159
 //for the a* algorithum.
 
 		//lng of tall buildings
@@ -106,19 +107,26 @@
 				 122.397209, 122.404312, 122.402702, 122.399483, 122.401955, 122.395004,
 				 122.397385, 122.400810, 122.394470, 122.400459, 122.402512, 122.404495,
 				 122.399231, 122.409309, 122.403351, 122.398491];
-		//make array of x co-ordinate of nodes in the grid
-		var xlist = [];
-		for (var i = 0; i < a.length; i++){
-		//change lng to x co-ordinate of nodes in the grid
-		if (((122.436000-a[i])*1000000)%100 !== 0){
-			var x = parseInt((122.436000-a[i])*1000000/100); 
-		 	}
-		else
-		 	{x = (122.436000-a[i])*1000000/100;
-		 	}
-		xlist.push(x);
-		}
+		//make array of x coordinate of nodes in the grid
 
+		function arrayOfx(a){
+
+			var xlist = [];
+			for (var i = 0; i < a.length; i++){
+			//change lng to x co-ordinate of nodes in the grid
+			if ((((-ulc[1])-a[i])*1000000)%100 !== 0){
+				var x = parseInt(((-ulc[1])-a[i])*1000000/100); 
+		 		}
+			else
+		 		{x = ((-ulc[1])-a[i])*1000000/100;
+		 		}
+			xlist.push(x);
+			}
+			return xlist;
+		}
+		var xlist = arrayOfx(a);
+
+		console.log(-ulc[1], "ret");
 		//lat of tall buildings
 		var b = [37.795132, 37.792061, 37.792572, 37.790375, 37.794430, 37.785728,
 				 37.790447, 37.792801, 37.789520, 37.795254, 37.789810, 37.793236,
@@ -129,17 +137,23 @@
 				 37.795090, 37.789204, 37.791813, 37.793839, 37.790421, 37.786320,
 				 37.795593, 37.787701, 37.793938, 37.794949];
 		//make array of y co-ordinate of nodes in the grid
-		var ylist = [];
-		for (var i = 0; i < b.length; i++){	
-		//change lat to y co-ordinate of nodes in the grid
-		if (((37.800000-b[i])*1000000)%100 !== 0){
-		 	var y = parseInt((37.800000-b[i])*1000000/100); 
-		 	}
-		else
-		 	{y = (37.800000-b[i])*1000000/100;
-		 	}
-		ylist.push(y); 	
+
+		function arrayOfy(b){
+
+			var ylist = [];
+			for (var i = 0; i < b.length; i++){	
+			//change lat to y co-ordinate of nodes in the grid
+			if (((ulc[0]-b[i])*1000000)%100 !== 0){
+		 		var y = parseInt((ulc[0]-b[i])*1000000/100); 
+		 		}
+			else
+		 		{y = (ulc[0]-b[i])*1000000/100;
+		 		}
+			ylist.push(y); 	
+			}
+			return ylist;
 		}
+		var ylist = arrayOfy(b);	
 
 		console.log(xlist,ylist); //print on console for debugging
 //Define the footprint of all tall buildings, assuming them to be 11x11 nodes,
@@ -171,13 +185,20 @@
         //set nodes of all building >380 feet to be un-walkable.
         //The building footprint is assumed to be 11x11 nodes length and width.
         //roughly the side of a small city block or half a big city block.
-        for (var i = 0; i < xlist.length; i++)
-        {
-        	for (var j = 0; j < e.length; j++)
-        	{	
-        		grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
+
+        function setUnWalkable(xlist, e, ylist, g){
+
+        	for (var i = 0; i < xlist.length; i++)
+        	{
+        		for (var j = 0; j < e.length; j++)
+        		{	
+        			grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
+        		}
         	}
-        }
+        	return grid;
+        }	
+
+        var grid = setUnWalkable(xlist, e, ylist, g);
 
         console.log(grid);//print on console for debugging
       
@@ -190,21 +211,34 @@
 
 //Change delivery address from latlng to grid nodes.
         //change lng to x co-ordinate of node in grid
-        var lng = -({{lng}});
-        console.log(lng);//print on console for debugging
-		if (((122.436000-lng)*1000000)%100 !== 0){
-		var x1 = parseInt((122.436000-lng)*1000000/100); 
+        function lngTox(lng){
+
+        	var lng = -({{lng}});
+        	console.log(lng);//print on console for debugging
+			if ((((-ulc[1])-lng)*1000000)%100 !== 0){
+			var x1 = parseInt(((-ulc[1])-lng)*1000000/100); 
+			}
+			else
+			{x1 = ((-ulc[1])-lng)*1000000/100;
+			}
+			return x1;
 		}
-		else
-		{x1 = (122.436000-lng)*1000000/100;
-		}
+		
+		var x1 = lngTox({{lng}});	
+
         //change Lat to y co-ordinate of node in grid
-		if (((37.800000-{{lat}})*1000000)%100 !== 0){
-		var y1 = parseInt((37.800000-{{lat}})*1000000/100); 
+        function latToy(lng){
+
+			if (((ulc[0]-{{lat}})*1000000)%100 !== 0){
+			var y1 = parseInt((ulc[0]-{{lat}})*1000000/100); 
+			}
+			else
+			{y1 = (ulc[0]-{{lat}})*1000000/100;
+			}
+			return y1;
 		}
-		else
-		{y1 = (37.800000-{{lat}})*1000000/100;
-		}
+
+		var y1 = latToy({{lat}});
 		 	
 		console.log(x1, y1);//print on console for debugging
 
@@ -214,12 +248,18 @@
 
 // Draw the prefer flight path
 		// create lat,lng points from the 'path' array.
-		var line_points = [];
-			for (var i = 0; i < path.length; i++){
-				var p = [(37.800000 - path[i][1]*1/10000), - (122.436000 - path[i][0]*1/10000).toFixed(6)];
+		function latLngFromPath(path){
 
-				line_points.push(p);
+			var line_points = [];
+				for (var i = 0; i < path.length; i++){
+					var p = [(ulc[0] - path[i][1]*1/10000), - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6)];
+
+					line_points.push(p);
+					}
+					return line_points;
 				}
+
+		var line_points = latLngFromPath(path);		
 
 		console.log(line_points);//print on console for debugging
 		// add an event listener to a button
@@ -242,12 +282,18 @@
 
 //This make a marker move along the prefer flight path
 		// generate a GeoJSON line from the 'path' array
-		var geojson = { type: 'LineString', coordinates: []};
+		function geoJsonFromPath(path){
 
-		for (var i = 0; i < path.length; i++){
-		var p = [ - (122.436000 - path[i][0]*1/10000).toFixed(6), (37.800000 - path[i][1]*1/10000)]    
-		geojson.coordinates.push(p);
+			var geojson = { type: 'LineString', coordinates: []};
+
+			for (var i = 0; i < path.length; i++){
+			var p = [ - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6), (ulc[0] - path[i][1]*1/10000)]    
+			geojson.coordinates.push(p);
+			}
+			return geojson;
 		}
+
+		var geojson = geoJsonFromPath(path);
 
 		console.log(geojson);//print on console for debugging
 
