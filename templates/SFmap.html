@@ -33,7 +33,7 @@
         <div class="form" id="order4">
         <a class="btn btn-primary btn-sm">Click to see the 3D flight path</a>
         </div>
-
+        <script type="text/javascript" src="static/js/calculations.js"></script>
 		<script>
 //This import the map from mapbox.
 //The map was created with the mapbox API and markers are place for all the
@@ -107,26 +107,12 @@
 				 122.397209, 122.404312, 122.402702, 122.399483, 122.401955, 122.395004,
 				 122.397385, 122.400810, 122.394470, 122.400459, 122.402512, 122.404495,
 				 122.399231, 122.409309, 122.403351, 122.398491];
+
 		//make array of x coordinate of nodes in the grid
-
-		function arrayOfx(a){
-
-			var xlist = [];
-			for (var i = 0; i < a.length; i++){
-			//change lng to x co-ordinate of nodes in the grid
-			if ((((-ulc[1])-a[i])*1000000)%100 !== 0){
-				var x = parseInt(((-ulc[1])-a[i])*1000000/100); 
-		 		}
-			else
-		 		{x = ((-ulc[1])-a[i])*1000000/100;
-		 		}
-			xlist.push(x);
-			}
-			return xlist;
-		}
 		var xlist = arrayOfx(a);
 
-		console.log(-ulc[1], "ret");
+		console.log(-ulc[1], "retangle");//keep this for debugging
+
 		//lat of tall buildings
 		var b = [37.795132, 37.792061, 37.792572, 37.790375, 37.794430, 37.785728,
 				 37.790447, 37.792801, 37.789520, 37.795254, 37.789810, 37.793236,
@@ -136,26 +122,26 @@
 				 37.793186, 37.785385, 37.791359, 37.788761, 37.786644, 37.791176,
 				 37.795090, 37.789204, 37.791813, 37.793839, 37.790421, 37.786320,
 				 37.795593, 37.787701, 37.793938, 37.794949];
+
 		//make array of y co-ordinate of nodes in the grid
+		// function arrayOfy(b){
 
-		function arrayOfy(b){
-
-			var ylist = [];
-			for (var i = 0; i < b.length; i++){	
-			//change lat to y co-ordinate of nodes in the grid
-			if (((ulc[0]-b[i])*1000000)%100 !== 0){
-		 		var y = parseInt((ulc[0]-b[i])*1000000/100); 
-		 		}
-			else
-		 		{y = (ulc[0]-b[i])*1000000/100;
-		 		}
-			ylist.push(y); 	
-			}
-			return ylist;
-		}
+		// 	var ylist = [];
+		// 	for (var i = 0; i < b.length; i++){	
+		// 	//change lat to y co-ordinate of nodes in the grid
+		// 	if (((ulc[0]-b[i])*1000000)%100 !== 0){
+		//  		var y = parseInt((ulc[0]-b[i])*1000000/100); 
+		//  		}
+		// 	else
+		//  		{y = (ulc[0]-b[i])*1000000/100;
+		//  		}
+		// 	ylist.push(y); 	
+		// 	}
+		// 	return ylist;
+		// }
 		var ylist = arrayOfy(b);	
 
-		console.log(xlist,ylist); //print on console for debugging
+		console.log(xlist,ylist); //keeping this for debugging
 //Define the footprint of all tall buildings, assuming them to be 11x11 nodes,
 //length and width, roughly the size of a small city block or half a big city block.
 		//list of x co-ordinate of nodes for building width in grid 
@@ -186,21 +172,21 @@
         //The building footprint is assumed to be 11x11 nodes length and width.
         //roughly the side of a small city block or half a big city block.
 
-        function setUnWalkable(xlist, e, ylist, g){
+        // function setUnWalkable(xlist, e, ylist, g){
 
-        	for (var i = 0; i < xlist.length; i++)
-        	{
-        		for (var j = 0; j < e.length; j++)
-        		{	
-        			grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
-        		}
-        	}
-        	return grid;
-        }	
+        // 	for (var i = 0; i < xlist.length; i++)
+        // 	{
+        // 		for (var j = 0; j < e.length; j++)
+        // 		{	
+        // 			grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
+        // 		}
+        // 	}
+        // 	return grid;
+        // }	
 
         var grid = setUnWalkable(xlist, e, ylist, g);
 
-        console.log(grid);//print on console for debugging
+        console.log(grid);//keeping for debugging
       
 //Build a path-finder with AStarFinder and using chebyshev heuristic 
         var finder = new PF.AStarFinder({
@@ -211,36 +197,36 @@
 
 //Change delivery address from latlng to grid nodes.
         //change lng to x co-ordinate of node in grid
-        function lngTox(lng){
+  //       function lngTox(lng){
 
-        	var lng = -({{lng}});
-        	console.log(lng);//print on console for debugging
-			if ((((-ulc[1])-lng)*1000000)%100 !== 0){
-			var x1 = parseInt(((-ulc[1])-lng)*1000000/100); 
-			}
-			else
-			{x1 = ((-ulc[1])-lng)*1000000/100;
-			}
-			return x1;
-		}
+  //       	var lng = -({{lng}});
+  //       	console.log(lng);//keeping for debugging
+		// 	if ((((-ulc[1])-lng)*1000000)%100 !== 0){
+		// 	var x1 = parseInt(((-ulc[1])-lng)*1000000/100); 
+		// 	}
+		// 	else
+		// 	{x1 = ((-ulc[1])-lng)*1000000/100;
+		// 	}
+		// 	return x1;
+		// }
 		
 		var x1 = lngTox({{lng}});	
 
         //change Lat to y co-ordinate of node in grid
-        function latToy(lng){
+  //       function latToy(lat){
 
-			if (((ulc[0]-{{lat}})*1000000)%100 !== 0){
-			var y1 = parseInt((ulc[0]-{{lat}})*1000000/100); 
-			}
-			else
-			{y1 = (ulc[0]-{{lat}})*1000000/100;
-			}
-			return y1;
-		}
+		// 	if (((ulc[0]-{{lat}})*1000000)%100 !== 0){
+		// 	var y1 = parseInt((ulc[0]-{{lat}})*1000000/100); 
+		// 	}
+		// 	else
+		// 	{y1 = (ulc[0]-{{lat}})*1000000/100;
+		// 	}
+		// 	return y1;
+		// }
 
 		var y1 = latToy({{lat}});
 		 	
-		console.log(x1, y1);//print on console for debugging
+		console.log(x1, y1);//keeping for debugging
 
 //Find a path from delivery center(420, 38) to customer address(x1, y1)
 //Note: both the start point and end point should be walkable
@@ -248,22 +234,22 @@
 
 // Draw the prefer flight path
 		// create lat,lng points from the 'path' array.
-		function latLngFromPath(path){
+		// function latLngFromPath(path){
 
-			var line_points = [];
-				for (var i = 0; i < path.length; i++){
-					var p = [(ulc[0] - path[i][1]*1/10000), - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6)];
+		// 	var line_points = [];
+		// 		for (var i = 0; i < path.length; i++){
+		// 			var p = [(ulc[0] - path[i][1]*1/10000), - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6)];
 
-					line_points.push(p);
-					}
-					return line_points;
-				}
+		// 			line_points.push(p);
+		// 			}
+		// 			return line_points;
+		// 		}
 
 		var line_points = latLngFromPath(path);		
 
-		console.log(line_points);//print on console for debugging
+		console.log(line_points);//keeping for debugging
 		// add an event listener to a button
-		// use these 3 lines in that function
+		// use these 3 lines in that function to post the line_points back to the server(/earth url)
 		$("#order4").click(function(){
 			var post_line_points = JSON.stringify(line_points);
 			$('body').append('<form id="form" action="/earth" method="POST"><input name="coords" value="' + post_line_points + '">')
@@ -282,20 +268,20 @@
 
 //This make a marker move along the prefer flight path
 		// generate a GeoJSON line from the 'path' array
-		function geoJsonFromPath(path){
+		// function geoJsonFromPath(path){
 
-			var geojson = { type: 'LineString', coordinates: []};
+		// 	var geojson = { type: 'LineString', coordinates: []};
 
-			for (var i = 0; i < path.length; i++){
-			var p = [ - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6), (ulc[0] - path[i][1]*1/10000)]    
-			geojson.coordinates.push(p);
-			}
-			return geojson;
-		}
+		// 	for (var i = 0; i < path.length; i++){
+		// 	var p = [ - ((-ulc[1]) - path[i][0]*1/10000).toFixed(6), (ulc[0] - path[i][1]*1/10000)]    
+		// 	geojson.coordinates.push(p);
+		// 	}
+		// 	return geojson;
+		// }
 
 		var geojson = geoJsonFromPath(path);
 
-		console.log(geojson);//print on console for debugging
+		console.log(geojson);//keeping for debugging
 
 		//define moving marker
 		var geojsonLayer = L.geoJson(geojson).addTo(map),
@@ -311,8 +297,7 @@
         	geojson.coordinates[j][1],
         	geojson.coordinates[j][0]));
 
-    	// move to the next point in the line or loop to the first point if
-    	// j runs off the end of the array
+    	// move to the next point in the line
     	if (++j < geojson.coordinates.length) setTimeout(tick, 20);
 		}
 
