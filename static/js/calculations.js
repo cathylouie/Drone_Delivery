@@ -45,9 +45,8 @@ function setUnWalkable(xlist, e, ylist, g){
 function lngTox(lng){
 
         	var lng = -(lng);
-        	console.log(lng);//keeping for debugging
 			if ((((-ulc[1])-lng)*1000000)%100 !== 0){
-			var x1 = parseInt(((-ulc[1])-lng)*1000000/100); 
+			var x1 = parseInt(((-ulc[1])-lng)*1000000/100);
 			}
 			else
 			{x1 = ((-ulc[1])-lng)*1000000/100;

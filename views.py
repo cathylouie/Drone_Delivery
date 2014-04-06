@@ -24,6 +24,11 @@ def load_user(user_id):
 # Adding markdown capability to the app
 Markdown(app)
 
+@app.route("/testsuite")
+def testsuite():
+
+    return render_template("testsuite.html")
+
 @app.route("/earth", methods=["POST"])
 def earth():
     coords_list = json.loads(request.form.get("coords",[]))

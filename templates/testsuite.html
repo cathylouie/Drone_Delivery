@@ -2,16 +2,17 @@
 
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [array of test coordinates]
-	var test_result = arrayOfx(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var ulc = [37.800000, -122.436000];
+	var test_array = [122.402756, 122.398994, 122.398491];
+	var test_result = arrayOfx(test_array);
+	if (test_result[0]==332 &&  test_result[1]==370 && test_result[2]==375) {
+		console.log("yay, arrayOfx");
 	} else {
-		console.log("bad.")
+		console.log("bad, arrayOfx");
 	}
 </script>
 
-function arrayOfx(a){
+<!-- function arrayOfx(a){
 
 	var xlist = [];
 	for (var i = 0; i < a.length; i++){
@@ -25,18 +26,18 @@ function arrayOfx(a){
 	xlist.push(x);
 	}
 	return xlist;
-}
+} -->
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [array of test coordinates]
-	var test_result = arrayOfy(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var test_array = [37.795132, 37.792572, 37.794949];
+	var test_result = arrayOfy(test_array);
+	if (test_result[0]==48 &&  test_result[1]==74 && test_result[2]==50) {
+		console.log("yay, arrayOfy");
 	} else {
-		console.log("bad.")
+		console.log("bad, arrayOfy");
 	}
 </script>
-function arrayOfy(b){
+<!-- function arrayOfy(b){
 
 			var ylist = [];
 			for (var i = 0; i < b.length; i++){	
@@ -50,39 +51,20 @@ function arrayOfy(b){
 			ylist.push(y); 	
 			}
 			return ylist;
-		}
-<script type="text/javascript">
-	//write tests here :)
-	var test_array = [array of test nodes]
-	var test_result = setUnWalkable(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
-	} else {
-		console.log("bad.")
-	}
-</script>
-function setUnWalkable(xlist, e, ylist, g){
+		} -->
 
-        	for (var i = 0; i < xlist.length; i++)
-        	{
-        		for (var j = 0; j < e.length; j++)
-        		{	
-        			grid.setWalkableAt(xlist[i]+e[j], ylist[i]+g[j], false);
-        		}
-        	}
-        	return grid;
-        }
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [test x node]
-	var test_result = lngTox(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var ulc = [37.800000, -122.436000];
+	var test_array = [-122.4051466];
+	var test_result = lngTox(test_array);
+	if (test_result == 308) {
+		console.log("yay, lngTox");
 	} else {
-		console.log("bad.")
+		console.log("bad, lngTox");
 	}
 </script>
-function lngTox(lng){
+<!-- function lngTox(lng){
 
         	var lng = -(lng);
         	console.log(lng);//keeping for debugging
@@ -93,18 +75,18 @@ function lngTox(lng){
 			{x1 = ((-ulc[1])-lng)*1000000/100;
 			}
 			return x1;
-		}
+		} -->
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [test y node]
-	var test_result = latToy(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var test_array = [37.7815184];
+	var test_result = latToy(test_array);
+	if (test_result == 184) {
+		console.log("yay, latToy");
 	} else {
-		console.log("bad.")
+		console.log("bad, latToy");
 	}
 </script>
-function latToy(lat){
+<!-- function latToy(lat){
 
 			if (((ulc[0]-lat)*1000000)%100 !== 0){
 			var y1 = parseInt((ulc[0]-lat)*1000000/100); 
@@ -113,18 +95,18 @@ function latToy(lat){
 			{y1 = (ulc[0]-lat)*1000000/100;
 			}
 			return y1;
-		}
+		} -->
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [array of test coordinates]
-	var test_result = latLngFromPath(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var test_array = [[420, 38], [308, 184]];
+	var test_result = latLngFromPath(test_array);
+	if (test_result[0][0]==37.7962 && test_result[0][1]== -122.394 && test_result[1][0]==37.7816 && test_result[1][1]== -122.4052){
+		console.log("yay, latLngFromPath");
 	} else {
-		console.log("bad.")
+		console.log("bad, latLngFromPath");
 	}
 </script>
-function latLngFromPath(path){
+<!-- function latLngFromPath(path){
 
 			var line_points = [];
 				for (var i = 0; i < path.length; i++){
@@ -133,18 +115,18 @@ function latLngFromPath(path){
 					line_points.push(p);
 					}
 					return line_points;
-				}
+				} -->
 <script type="text/javascript">
 	//write tests here :)
-	var test_array = [array of test coordinates]
-	var test_result = geoJsonFromPath(test_array)
-	if (test_result == "something you expect") {
-		console.log("yay")
+	var test_array = [[420, 38], [308, 184]];
+	var test_result = geoJsonFromPath(test_array);
+	if (test_result.coordinates[0][0]== -122.394 && test_result.coordinates[0][1]== 37.7962 && test_result.coordinates[1][0]== -122.4052 && test_result.coordinates[1][1]== 37.7816){
+		console.log("yay, geoJsonFromPath");
 	} else {
-		console.log("bad.")
+		console.log("bad, geoJsonFromPath");
 	}
 </script>
-function geoJsonFromPath(path){
+<!-- function geoJsonFromPath(path){
 
 			var geojson = { type: 'LineString', coordinates: []};
 
@@ -153,4 +135,4 @@ function geoJsonFromPath(path){
 			geojson.coordinates.push(p);
 			}
 			return geojson;
-		}
+		} -->

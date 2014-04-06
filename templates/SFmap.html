@@ -66,7 +66,7 @@
 		var polyline = L.polyline(line_points, polyline_options).addTo(map);
 
 //---------------------keeping for reference------------------------------------
-//This draw the grid defined in line 159
+//This draw the grid defined in var grid
 
 		// //vert line 0.000250 by 0.000250 degree
 		// for (var i = 0; i < 499; i++){
@@ -95,8 +95,8 @@
 		// }
 //---------------------keeping for reference------------------------------------
 
-//Change building coordinates from LatLng to nodes in grid defined in line 159
-//for the a* algorithum.
+//Change building coordinates from LatLng to nodes for the grid used in 
+//the a* algorithum.
 
 		//lng of tall buildings
 		var a = [122.402756, 122.403770, 122.400444, 122.396187, 122.399612, 122.392174,
@@ -141,7 +141,7 @@
 		// }
 		var ylist = arrayOfy(b);	
 
-		console.log(xlist,ylist); //keeping this for debugging
+		console.log(xlist, "xlist", ylist, "ylist"); //keeping this for debugging
 //Define the footprint of all tall buildings, assuming them to be 11x11 nodes,
 //length and width, roughly the size of a small city block or half a big city block.
 		//list of x co-ordinate of nodes for building width in grid 
@@ -186,7 +186,7 @@
 
         var grid = setUnWalkable(xlist, e, ylist, g);
 
-        console.log(grid);//keeping for debugging
+        console.log(grid, "grid");//keeping for debugging
       
 //Build a path-finder with AStarFinder and using chebyshev heuristic 
         var finder = new PF.AStarFinder({
@@ -226,14 +226,16 @@
 
 		var y1 = latToy({{lat}});
 		 	
-		console.log(x1, y1);//keeping for debugging
+		console.log(x1, y1, "x1, y1");//keeping for debugging
 
 //Find a path from delivery center(420, 38) to customer address(x1, y1)
 //Note: both the start point and end point should be walkable
         var path = finder.findPath(420, 38, x1, y1, grid);
 
+        console.log(path, "path nodes");//keeping for debugging
 // Draw the prefer flight path
 		// create lat,lng points from the 'path' array.
+
 		// function latLngFromPath(path){
 
 		// 	var line_points = [];
@@ -247,7 +249,7 @@
 
 		var line_points = latLngFromPath(path);		
 
-		console.log(line_points);//keeping for debugging
+		console.log(line_points, "coordinates");//keeping for debugging
 		// add an event listener to a button
 		// use these 3 lines in that function to post the line_points back to the server(/earth url)
 		$("#order4").click(function(){
