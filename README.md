@@ -12,13 +12,15 @@ How to run the code in this repository
 4. With the postgres database up and running and the ducks table seeded, the program can be run by running 'foreman start'    in the python shell.
 
 Note 1: The above instructions are for a Mac.
-Note 2: The flight path will be generated only if the delivery address is within these coordinates, [37.800000, -122              .436000], [37.800000, -122.386000], [37.780000, -122.386000], [37.780000, -122.436000]. One of the sample                 addresses I used for demonstration is 198 5th Street, San Francisco, CA 94103, USA.
+Note 2: The flight path will be generated only if the delivery address is within these <br/>coordinates, [37.800000, -122              .436000], [37.800000, -122.386000], [37.780000, -122.386000], [37.780000, -122.436000]. <br/>One of the sample                 addresses I used for demonstration is 198 5th Street, San Francisco, CA 94103, USA.
 
 Overview
+======
 
 An online store has been set up to sell rubber duckies and some of the deliveries may be made by drones.  A customer may browse the products (duckies in this case), login and place orders. If the delivery address provided by the customer is within the drone delivery area, a preferred flight path will be generated and the order will be delivered by a drone. The preferred flight path may be viewed in a 2D map or a 3D map on the website.
 
 The Web Application
+=========
 
 The Model View Controller (MVC) software design pattern is used to build this web application (webapp). The framework used is Flask with SQLAlchemy for database toolkit, all written in Python. SQLite was used for database during initial development but were switch to progresSQL in preparation for deploying onto Heroku. 
 
@@ -30,11 +32,13 @@ A unit test (testsuite.html) was written to check all the coordinates conversion
 Note: The calculations live in the calculations.js files.
 
 Technologies used:
+
 1. Front-end: Javascript, jqery, jinja, HTML, CSS, Bootstrap
 2. Back-end: Python, Flask, SQLAlchemy, PostgreSQL, SQlite.
 3. GIS-related: Mapbox API, Google maps API, Google Earth API, GeoJSON.
 
 Further Improvements
+============
 
 The following areas would benefit from further improvement.
 
@@ -45,6 +49,7 @@ The following areas would benefit from further improvement.
 3. Add the 'Touring' feature into the 3D Google Earth page. This would allow the user to 'fly' the flight path of the drone that was generated. This can be achieved by replacing the 2D map from Mapbox to a 2D map from Google Maps. This is because Google Maps exports coordinates information in the Keyhole Markup Language (KML) format, which is the only format Google Earth will support to enable the 'Touring' feature. 
 
 Hardware Considerations
+=============
 
 The following criteria should be considered during the development of the drone specification. Other requirements may also emerge during the development process.
 
@@ -57,6 +62,7 @@ The following criteria should be considered during the development of the drone 
 7. Overall control system - There should be some form of programable control system to execute navigation instructions, continued monitoring of in flight conditions to maintain safe flight (e.g. collision avoidance) and execute the landing procedure (see the next section for a proposed landing procedures).
 
 Operation Considerations
+=============
 
 There are many challenges that would affect a drone delivery operations. The following are some of the issues that would need to be considered.
 
@@ -68,10 +74,10 @@ There are many challenges that would affect a drone delivery operations. The fol
 
 4. Security of the drone should also be considered carefully. After a drone arrives at the delivery address coordinates, there should be a way to ensure that there is a suitable landing area and that the correct customer is there to receive the delivery. The following is a vision of my landing procedure. The use of a Quick Response (QR) code for a landing pad was inspired by the numerous return shipping labels (with QR codes) I had to print out for my husband's shoes.
 
-a. Prior to despatch of the drone, a phone call, email or text (or all three communication methods) indicating that the dispatch has occurred and estimated time of arrival (ETA) will be sent to the customer.
+  4.1 Prior to despatch of the drone, a phone call, email or text (or all three communication methods) indicating that the dispatch has occurred and estimated time of arrival (ETA) will be sent to the customer.
 
-b. A QR code will be emailed to the customer, which the customer will print out to use as a landing pad.  Instructions will be provided to the customer as to the optimal placement of the QR landing pad (i.e., no power lines, trees, etc. that may interfere with the drone's flight path).
+  4.2 A QR code will be emailed to the customer, which the customer will print out to use as a landing pad.  Instructions will be provided to the customer as to the optimal placement of the QR landing pad (i.e., no power lines, trees, etc.  that may interfere with the drone's flight path).
 
-c. Shortly before the ETA, the customer will receive an email or text message indicating that the drone will be arriving shortly and that the customer needs to place the QR landing pad in an appropriate location and wait for the drone to arrive.
+  4.3 Shortly before the ETA, the customer will receive an email or text message indicating that the drone will be arriving shortly and that the customer needs to place the QR landing pad in an appropriate location and wait for the drone to   arrive.
 
-d. Upon arrival at the delivery address coordinates, the drone will seek out the QR code landing pad with its onboard high resolution camera.  If the drone sees the correct QR code, it will complete its landing on the QR landing pad and the customer can unload the product (rubber duckies).  However, if the drone cannot detect the right QR code or cannot locate the QR code, then it will fly in a circular search pattern for 3 minutes.  After 3 minutes, if it cannot detect the QR code, then it will return to the delivery center and an email or text indicating a missed delivery will be sent to the customer.
+  4.4 Upon arrival at the delivery address coordinates, the drone will seek out the QR code landing pad with its onboard high resolution camera.  If the drone sees the correct QR code, it will complete its landing on the QR landing pad and the customer can unload the product (rubber duckies).  However, if the drone cannot detect the right QR code or cannot locate the QR code, then it will fly in a circular search pattern for 3 minutes.  After 3 minutes, if it cannot detect the QR code, then it will return to the delivery center and an email or text indicating a missed delivery will be sent to the customer.
