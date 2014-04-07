@@ -7,9 +7,9 @@ How to run the code in this repository
 ======================================
 
 1. Create a virtual environment and activate it in a Python shell.
-2. Run model.py to create the database schema. I am using postgresSQL for database so you need to have postgres installed    and running to run the app. My database is called 'duckiestore_app'.
+2. Run model.py to create the database schema. I am using PostgresSQL for database so you need to have postgres installed    and running to run the app. My database is called 'duckiestore_app'.
 3. Once the database is up and running. Run seedDuckie.py to seed the ducks table (my product table that stores my duckies    for sale).
-4. With the postgres database up and running and the ducks table seeded, the program can be run by running 'foreman start'    in the Python shell.
+4. With the Postgres database up and running and the ducks table seeded, the program can be run by running 'foreman start'    in the Python shell.
 
 Note 1: The above instructions are for a Mac.
 Note 2: The flight path will be generated only if the delivery address is within these <br/>coordinates, [37.800000, -122              .436000], [37.800000, -122.386000], [37.780000, -122.386000], [37.780000, -122.436000]. <br/>One of the sample                 addresses I used for demonstration is 198 5th Street, San Francisco, CA 94103, USA.
@@ -22,7 +22,7 @@ An online store has been set up to sell rubber duckies and some of the deliverie
 The Web Application
 =========
 
-The Model View Controller (MVC) software design pattern is used to build this web application. The framework used is Flask with SQLAlchemy for database toolkit, all written in Python. SQLite was used for database during initial development but were switch to progresSQL in preparation for deploying onto Heroku. 
+The Model View Controller (MVC) software design pattern is used to build this web application. The framework used is Flask with SQLAlchemy for database toolkit, all written in Python. SQLite was used for database during initial development but were switch to ProgresSQL in preparation for deploying onto Heroku. 
 
 Geographic information was obtained from three APIs - Mapbox, Google Maps and Google Earth.  
 
