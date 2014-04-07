@@ -66,14 +66,14 @@ class Address(Base):
             url="https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCeMBBKrZKuJdpfnmzj7roq5XO2Q1740aY&address=%s&sensor=false" % address
 
             r = requests.get(url)
-           # print "response: %r" % r.json()
+           # print "response: %r" % r.json()#keeping for debugging
             jsongeocode = r.json()
 
             latlng = jsongeocode["results"][0]["geometry"]["location"]
             self.lat = latlng["lat"]
             self.lng = latlng["lng"]
 
-            #print "lat: %s, lng: %s" % (self.lat, self.lng)
+            #print "lat: %s, lng: %s" % (self.lat, self.lng)#keeping for debugging
 
 
 class Order(Base):
@@ -105,7 +105,7 @@ class DuckOrder(Base):
     duck = relationship("Duck", backref="duckorders")
     
 def create_tables():
-    #Base.metadata.drop_all(engine) #this is for droping all tables for a fresh start.
+    #Base.metadata.drop_all(engine) #keeping this for droping all tables for a fresh start.
     Base.metadata.create_all(engine)
 
 if __name__ == "__main__":
