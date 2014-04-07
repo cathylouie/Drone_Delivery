@@ -39,6 +39,8 @@ Technologies used:
 
 ![2D flight path](https://raw.githubusercontent.com/cathylouie/Drone_Delivery/b4ad5c2eed0587e97f9597e735ea03ff3100bc70/static/img/2DPath.png)
 
+![3D flight path](https://raw.githubusercontent.com/cathylouie/Drone_Delivery/master/static/img/3DPath.png)
+
 Further Improvements
 ============
 
