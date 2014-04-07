@@ -37,6 +37,8 @@ Technologies used:
 2. Back-end: Python, Flask, SQLAlchemy, PostgreSQL, SQlite.
 3. GIS-related: Mapbox API, Google maps API, Google Earth API, GeoJSON.
 
+![2D flight path](https://raw.githubusercontent.com/cathylouie/Drone_Delivery/b4ad5c2eed0587e97f9597e735ea03ff3100bc70/static/img/2DPath.png)
+
 Further Improvements
 ============
 
