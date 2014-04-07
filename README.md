@@ -86,4 +86,4 @@ There are many challenges that would affect a drone delivery operations. The fol
 
   4.4 Upon arrival at the delivery address coordinates, the drone will seek out the QR code landing pad with its onboard high resolution camera.  If the drone sees the correct QR code, it will complete its landing on the QR landing pad and the customer can unload the product (rubber duckies).  However, if the drone cannot detect the right QR code or cannot locate the QR code, then it will fly in a circular search pattern for 3 minutes.  After 3 minutes, if it cannot detect the QR code, then it will return to the delivery center and an email or text indicating a missed delivery will be sent to the customer.
   
-  Note: The email, text and phone call to the customer may be achieved by using services provided by companies such as Twillo.com.
+  Note: Emails, messages and phone calls to the customer may be made automatically by integrating services provided by companies such as Twillo.com
