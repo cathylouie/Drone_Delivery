@@ -11,8 +11,8 @@ How to run the code in this repository
 3. Once the database is up and running, run `seedDuckie.py` to seed the ducks table (my product table that stores my duckies    for sale).
 4. With the Postgres database up and running and the ducks table seeded, the program can be run by running `foreman start`    in the terminal.
 
-Note 1: The above instructions are for a Mac.
-Note 2: The flight path will be generated only if the delivery address is within these <br/>coordinates, [37.800000, -122              .436000], [37.800000, -122.386000], [37.780000, -122.386000], [37.780000, -122.436000]. <br/>One of the sample                 addresses I used for demonstration is 198 5th Street, San Francisco, CA 94103, USA.
+Note 1: The above instructions are for a Mac.<br/>
+Note 2: The flight path will be generated only if the delivery address is within these <br/>coordinates, [37.800000, -122.436000], [37.800000, -122.386000], [37.780000, -122.386000], [37.780000, -122.436000]. <br/>One of the sample addresses I used for demonstration is 198 5th Street, San Francisco, CA 94103, USA.
 
 Overview
 ======
@@ -48,7 +48,7 @@ The following areas would benefit from further improvement.
 
 1. The A* path finding algorithm currently used requires the start point and end point to be "walkable", i.e. these cannot be obstacles. Therefore, if the delivery address is one of the high buildings that has been classified as an obstacle, the path finding algorithm will not calculate a path. This may be resolved by putting restrictions in the new customer registration form when they input their delivery address. This could also be put in an algorithm that will select one of the nodes closest to the tall buildings as the end point. 
 
-2. Improve user experience by showing the drone delivery area up front so that customers may register a different delivery address that allows for drone delivery.
+2. Improve user experience by adding a shopping cart feature so that customer may buy more than one type of duckies. Also, showing the drone delivery area up front so that customers may register a different delivery address that allows for drone delivery.
 
 3. Add the 'Touring' feature into the 3D Google Earth page. This would allow the user to 'fly' the flight path of the drone that was generated. This can be achieved by replacing the 2D map from Mapbox to a 2D map from Google Maps. Google Maps exports coordinate information in the Keyhole Markup Language (KML) format, which is the only format Google Earth will support to enable the 'Touring' feature. 
 
